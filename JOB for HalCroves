@@ -1,0 +1,270 @@
+# -------------------------------#
+# COFFRE OUVERT PAR LE J
+# 00 01 02 03 04 05 06 07 08
+# 09 10 11 12 13 14 15 16 17
+# 18 19 20 21 22 23 24 25 26
+# 27 28 29 30 31 32 33 34 35
+# 36 37 38 39 40 41 42 43 44
+# 45 46 47 48 49 50 51 52 53
+# INVENTAIRE DU JOUEUR
+# 54 55 56 57 58 59 60 61 62
+# 63 64 65 66 67 68 69 70 71
+# 72 73 74 75 76 77 78 79 80
+# ACTION BAR DU JOUEUR
+# 81 82 83 84 85 86 87 88 89
+# -------------------------------#
+function createTitleErrored(p: player):
+	loop 2000 times:
+		send {_p} title "&4&lErreur : &c&l%{error_trouved}%" with subtitle "&6%{jobs.error.text}%" for 10 second with 0 tick fade in and 0 tick fade out
+		wait 1 tick
+on load:
+	send "JOBS PLUGIN DÉMARRE.. Merci de patienter..." to console
+	if file "plugins/killian6341_config/jobs" doesn't exists:
+		if file "plugins/killian6341_config" doesn't exists:
+			send "[JOBS] Création du dossier pour les plugins de Killian6341..." to console
+			create folder "plugins/killian6341_config"
+			send "[JOBS] &2&lTerminé" to console
+		send "[JOBS] Création du dossier pour JOBS" to console
+		create folder "plugins/killian6341_config/jobs"
+		create folder "plugins/killian6341_config/jobs/players"
+		create folder "plugins/killian6341_config/jobs/jobs"
+		send "[JOBS] &2&lTerminé" to console
+	send "[JOBS] &6Démarrage du plugin..." to console
+command /jobs [<text>] [<text>]:
+	trigger:
+		if arg 1 is not set:
+			if player has permission "jobs.admin":
+				send "&cVous avez été détecté en tant qu'un administrateur" and "&cUtilisez donc la commande /ajobs"
+			send "&7======= [ JOBS ] =======" and "&c/jobs list &6- &7Tout les jobs disponibles."
+		if arg 1 is "list":
+			if arg 2 is not set:
+				# set {_jobs_list::*} to directory "plugins\killian6341_config\jobs\jobs"'s files 
+				set {_jobs_list::*} to files in "plugins\killian6341_config\jobs\jobs"
+				send "&7======= [ JOBS ] ======="
+				if {_jobs_list::*} is not set:
+					send "&4Erreur: &cAucun métier détecté."
+				else if {_jobs_list::*} is set:
+					set {_loop.id} to 1
+					send "&8Liste de tout les jobs disponibles:"
+					loop 45 times:
+						if {_jobs_list::%{_loop.id}%} is set:
+							replace all ".yml" with " " in {_jobs_list::*}
+							send "&c%{_loop.id}% &7- &6%{_jobs_list::%{_loop.id}%}%" to player
+							add 1 to {_loop.id}
+				send "&7======= [ LIST ] ======="
+command /ajobs [<text>] [<text>]:
+	trigger:
+		if player don't have permission "jobs.admin":
+			send "&4Erreur: &6Vous n'avez pas la permission."
+		else if player have permission "jobs.admin":
+			if arg 1 is not set:
+				send "&7======= [ JOBS &c&lADMIN &7] ======="
+				send "&7/ajobs setup &6- Créer un nouveau jobs étape par étape"
+				send "&7/ajobs remove &6- Supprimer un jobs"
+				send "&7/ajobs player &6- Configurer un joueur"
+				send "&c/ajobs reset &6- Réinitialiser le plugin"
+				send "&2/ajobs verif &6- Vérifier si un job est compatible."
+				send "&7/ajobs config &6- Configurer un job."
+				send "&7/ajobs help &6- Créer un job avec le nom ""help"" pour un tutoriel complet comment celà fonctionne."
+				send "&7======= [ JOBS &c&lADMIN &7] ======="
+			if arg 1 is "verif":
+				if arg 2 is not set:
+					send "&7======= [ JOBS &c&lADMIN &7] ======="
+					send "&2/ajobs verif [<jobs>]"
+					send "&7======= [ JOBS &c&lADMIN &7] ======="
+				if arg 2 is set:
+					set {error_trouved} to 0
+					
+					
+					
+					
+					createTitleErrored(player)
+					
+					# set {_ajobs_verif_step} to 0
+					# add 1 to {_ajobs_verif_step}
+					# set action bar of player to "&4&lÉTAPE : &6%{_ajobs_verif_step}%/777777                        &4&lTPS : %tps*5%"
+					# set {jobs.error.text} to "&7Vérifie : &4Éxistance du fichier"
+					
+					
+					# add 1 to {_ajobs_verif_step}
+					# set action bar of player to "&4&lÉTAPE : &6%{_ajobs_verif_step}%/777777                        &4&lTPS : %tps*5%"
+					# if file "plugins/killian6341_config/jobs/jobs/%arg-2%.yml" doesn't exists:
+						# add 1 to {error_trouved}
+						# send "&4Erreur %{error_trouved}%: &6Le fichier éxiste pas"
+						# send "&4Erreur %{error_trouved}%: &6ARRÊT DE L'ANALYSE"
+						# set {jobs.error.text} to "&7Vérifie : &4Arrêt de l'analyse en cours..."
+						# stop
+					# wait 1 tick
+					
+					
+					# add 1 to {_ajobs_verif_step}
+					# set action bar of player to "&4&lÉTAPE : &6%{_ajobs_verif_step}%/777777                        &4&lTPS : %tps*5%"
+					# set {jobs.error.text} to "&7Vérifie : &4Nom du job compatible"
+					# set {_jobs_list::*} to files in "plugins\killian6341_config\jobs\jobs"
+					# replace all ".yml" with " " in {_jobs_list::*}
+					# if {_jobs_list::%arg-2%} is set:
+						# if  {_jobs_list::%arg-2%} contain "." or " ":
+							# add 1 to {error_trouved}
+							# send "&4Erreur %{error_trouved}%: &6Le nom du fichier contien un ""."" ou un espace"
+					# wait 1 tick
+					
+					
+					# add 1 to {_ajobs_verif_step}
+					# set action bar of player to "&4&lÉTAPE : &6%{_ajobs_verif_step}%/777777                        &4&lTPS : %tps*5%"
+					# set {jobs.error.text} to "&7Vérifie : &4Vérifie le nom du job."
+					# set {_test_internal_name} to single value "metier" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+					# if {_test_internal_name} contain "." or " ":
+						# add 1 to {error_trouved}
+						# send "&4Erreur %{error_trouved}%: &6Le nom du fichier job un ""."" ou un espace"
+					
+					
+					# wait 1 tick
+					
+					# add 1 to {_ajobs_verif_step}
+					# set action bar of player to "&4&lÉTAPE : &6%{_ajobs_verif_step}%/777777                        &4&lTPS : %tps*5%"
+					# set {jobs.error.text} to "&7Vérifie : &4Vérifie si actif est erroné."
+					# set {_test_internal_actif} to single value "actif" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+					# if {_test_internal_name} is not true or false:
+						# add 1 to {error_trouved}
+						# send "&4Erreur %{error_trouved}%: &6Impossible de reconnaître la variable pour définir si le job est Actif ou non"
+						
+						
+						
+						
+						# wait 1 tick
+						
+						
+						
+						
+						
+						
+						
+						
+					# set {jobs.error.text} to "&7Vérifie : &4BLOCK PLACE ........"
+					# wait 5 tick
+					# set {_test_internal_block::*} to value list "block_place" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+					# set {_list_of_all_blocks::*} to value list "BREAKABLE_OR_PLACABLE" get of "plugins/killian6341_config/jobs/verify_system/block.yml"
+					# loop 360 times:
+						# add 1 to {_ajobs_verif_step}
+						# set action bar of player to "&4&lÉTAPE : &6%{_ajobs_verif_step}%/777777                        &4&lTPS : %tps*5%"
+						# set {jobs.error.text} to "&7Vérifie : &4BLOCK_PLACE : &6%{_list_of_all_blocks::%loop-number%}% &e&lWAIT."
+						# set {_rufh} to {_test_internal_block::%loop-number%}
+						# if {_test_internal_block::%loop-number%} is not set:
+							# set {jobs.error.text} to "&7Vérifie : &4BLOCK_PLACE : &6%{_list_of_all_blocks::%loop-number%}% &3&lPASS."
+						# else if {_list_of_all_blocks::%{_rufh}%} is not set:
+							# add 1 to {error_trouved}
+							# send "&4Erreur %{error_trouved}%: &6PLACE_block >> L'id %{_test_internal_block::%loop-number%}% n'est pas reconnue."
+					
+					# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  361 
+						
+						
+						
+						
+						# wait 1 tick
+						
+						
+						
+						
+						
+						
+						
+					set {jobs.error.text} to "&7Vérifie : &4BREAK ........"
+					wait 5 tick
+					set {_test_internal_block::*} to value list "block_break" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+					set {_list_of_all_blocks::*} to value list "BREAKABLE_OR_PLACABLE" get of "plugins/killian6341_config/jobs/verify_system/block.yml"
+					loop 361 times:
+						wait 1 tick
+						add 1 to {_ajobs_verif_step}
+						set action bar of player to "&4&lÉTAPE : &6%{_ajobs_verif_step}%/777777                        &4&lTPS : %tps*5%"
+						set {jobs.error.text} to "&7Vérifie : &4BREAK_BLOCK : &6%{_list_of_all_blocks::%loop-number%}%. &e&lWAIT"
+						set {_rufh} to {_test_internal_block::%loop-number%}						
+						if {_test_internal_block::%loop-number%} is set:
+							# send "&c%{_test_internal_block::%loop-number-1%}%"
+							set {_ans_1} to "%{_list_of_all_blocks::*}%"
+							set {_ans_2} to {_test_internal_block::%loop-number%}
+							if {_ans_1} contain {_ans_2}:
+								set {jobs.error.text} to "&7Vérifie : &4BREAK_BLOCK : &6%{_list_of_all_blocks::%loop-number%}% &3&lPASS."
+							else if {_ans_1} don't contain {_ans_2}:
+								if {ajobs_nospam} is not set:
+									add 1 to {error_trouved}
+									send "&4Erreur %{error_trouved}%: &6BREAK_BLOCK >> L'id %{_test_internal_block::%loop-number%}% n'est pas un bloc cassable."
+									set {ajobs_nospam} to true
+						delete {ajobs_nospam}
+								
+						
+						
+						
+						# wait 1 tick
+						
+						
+						
+						
+						
+						
+						
+					set {jobs.error.text} to "&7Vérifie : &4REPAIR ........"
+					wait 5 tick
+					set {_test_internal_block::*} to value list "reparer" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+					set {_list_of_all_blocks::*} to value list "ITEM_REPAIRED" get of "plugins/killian6341_config/jobs/verify_system/repair.yml"
+					loop 47 times:
+						wait 1 tick
+						add 1 to {_ajobs_verif_step}
+						set action bar of player to "&4&lÉTAPE : &6%{_ajobs_verif_step}%/777777                        &4&lTPS : %tps*5%"
+						set {jobs.error.text} to "&7Vérifie : &4REPAIR_ITEM : &6%{_list_of_all_blocks::%loop-number%}%. &e&lWAIT"
+						set {_rufh} to {_test_internal_block::%loop-number%}						
+						if {_test_internal_block::%loop-number%} is set:
+							# send "&c%{_test_internal_block::%loop-number-1%}%"
+							set {_ans_1} to "%{_list_of_all_blocks::*}%"
+							set {_ans_2} to {_test_internal_block::%loop-number%}
+							if {_ans_1} contain {_ans_2}:
+								set {jobs.error.text} to "&7Vérifie : &4REPAIR_ITEM : &6%{_list_of_all_blocks::%loop-number%}% &3&lPASS."
+							else if {_ans_1} don't contain {_ans_2}:
+								if {ajobs_nospam} is not set:
+									add 1 to {error_trouved}
+									send "&4Erreur %{error_trouved}%: &6REPAIR_ITEM >> L'id %{_test_internal_block::%loop-number%}% n'est pas reconnue/n'est pas un item réparable."
+									set {ajobs_nospam} to true
+						delete {ajobs_nospam}
+						# send "%loop-value% %{_test_internal_block::%loop-number%}%"
+					
+			if arg 1 is "setup":
+				if {editor.mode.%player%} is not set:
+					send player title "&9JOBS CREATION" with subtitle "&6Pour quitter tapez 'quit'" for 99 second
+					wait 4 second
+					send player title "&9Étape 1" with subtitle "&6Entrer un nom de métier dans le chat." for 99 second
+					set {editor.mode.%player%} to 0
+				else:
+					send "&4Erreur: &6Mode édition déjà en cours..."
+on chat:
+	if {editor.mode.%player%} is set:
+		cancel event
+	if message contain "quit":
+		if {editor.mode.%player%} is set:
+			delete {editor.mode.%player%}
+			delete file "plugins/killian6341_config/jobs/jobs/%{last.name.of.yaml.jobs.%player%}%.yml"
+			delete {last.name.of.yaml.jobs.%player%}
+			send player title "&9JOBS" with subtitle "&6Vous avez quitter le mode de création." for 1 second
+	if {editor.mode.%player%} is 0:
+		if file "plugins\killian6341_config\jobs\jobs\%message%" exists:
+			send player title "&4&lERREUR" with subtitle "&6Ce job éxiste déjà." for 4 second
+			wait 3 second
+			send player title "&9Étape 1" with subtitle "&6Entrer un nom de métier dans le chat." for 99 second
+		if message contain " " or ".":
+			send player title "&4&lERREUR" with subtitle "&6L'espace ou le point n'est pas autorisé." for 4 second
+			wait 3 second
+			send player title "&9Étape 1" with subtitle "&6Entrer un nom de métier dans le chat." for 99 second
+		else:
+			set {last.name.of.yaml.jobs.%player%} to message
+			send player title "&9Étape 1" with subtitle "&6Copie du fichier..." for 1 second
+			copy file "plugins\killian6341_config\jobs\seed\temp.yml" to "plugins\killian6341_config\jobs\jobs\"
+			download from "https://drive.google.com/uc?export=download&id=0B2y_lcANJO7tSE9vVDZXNG5PTms" to "plugins/killian6341_config/jobs/jobs/"
+			wait 5 tick
+			send player title "&9Étape 1" with subtitle "&6Chargement en cours..." for 10 second
+			rename file "plugins\killian6341_config\jobs\jobs\temp.yml" to "%{last.name.of.yaml.jobs.%player%}%.yml"
+			wait 5 tick
+			set "metier" to "%{last.name.of.yaml.jobs.%player%}%" in yaml file "plugins/killian6341_config/jobs/jobs/%{last.name.of.yaml.jobs.%player%}%.yml"
+			send player title "&9Étape 1" with subtitle "&6Fichier créer..." for 10 second
+			delete {editor.mode.%player%}
+			delete {last.name.of.yaml.jobs.%player%}
+			send player title "&9LES JOBS" with subtitle "&6plugins/killian6341_config/jobs/jobs" for 3 second
+			wait 4 second
+			send player title "&9" with subtitle "&2Fin de la création." for 3 second
