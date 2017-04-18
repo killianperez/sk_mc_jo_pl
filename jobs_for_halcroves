@@ -22,7 +22,7 @@
 #
 # LENGTH : 67600+
 # LINES: 1100+
-# TYPE: DOS\WINDOWS
+# TYPE: DOS/WINDOWS
 # WRITED: UTF-8
 # RUP: INS
 # -------------------------------#
@@ -585,12 +585,12 @@ command /jobs [<text>] [<text>]:
 					if arg 2 is not set:
 						send "&8[&6JOBS&8] &4Erreur: &cNom du job invalide."
 					if arg 2 is set:
-						set {_jobs_detect::*} to files in "plugins\killian6341_config\jobs\players"
+						set {_jobs_detect::*} to files in "plugins/killian6341_config/jobs/players"
 						replace all ".yml" with "" in {_jobs_detect::*}
 						if {_jobs_detect::*} contain "%player%":
 							send "&8[&6JOBS&8] &4Erreur: &cQuittez un job d'abord."
 							stop
-						set {_jobs_list::*} to files in "plugins\killian6341_config\jobs\jobs"
+						set {_jobs_list::*} to files in "plugins/killian6341_config/jobs/jobs"
 						replace all ".yml" with "" in {_jobs_list::*}
 						if {_jobs_list::*} doesn't contain arg-2:
 							send "&8[&6JOBS&8] &4Erreur: &cNom du job invalide."
@@ -603,7 +603,7 @@ command /jobs [<text>] [<text>]:
 					if arg 2 is not set:
 						send "&4Erreur: &cNom du job invalide."
 					if arg 2 is set:
-						set {_jobs_list::*} to files in "plugins\killian6341_config\jobs\jobs"
+						set {_jobs_list::*} to files in "plugins/killian6341_config/jobs/jobs"
 						replace all ".yml" with "" in {_jobs_list::*}
 						if {_jobs_list::%arg-2%} don't contain arg-2:
 							send "&4Erreur: &cNom du job invalide."
@@ -896,8 +896,8 @@ command /jobs [<text>] [<text>]:
 							
 							
 				if arg 1 is "browse":
-						# set {_jobs_list::*} to directory "plugins\killian6341_config\jobs\jobs"'s files 
-					set {_jobs_list::*} to files in "plugins\killian6341_config\jobs\jobs"
+						# set {_jobs_list::*} to directory "plugins/killian6341_config/jobs/jobs"'s files 
+					set {_jobs_list::*} to files in "plugins/killian6341_config/jobs/jobs"
 					send "&7======= [ JOBS ] ======="
 					if {_jobs_list::*} is not set:
 						send "&4Erreur: &cAucun métier détecté."
@@ -1186,10 +1186,10 @@ command /ajobs [<text>] [<text>]:
 							send "&1&lATTENTION : Debug mode non actif"
 					if arg 1 is "list":
 						send "&7======= [ JOBS &c&lADMIN &7] ======="
-						set {_jobs_list::*} to files in "plugins\killian6341_config\jobs\jobs"
+						set {_jobs_list::*} to files in "plugins/killian6341_config/jobs/jobs"
 						loop {_jobs_list::*}:
 							add 1 to {_jobs.list.number}
-							set {_size.jobs} to size of file "plugins\killian6341_config\jobs\jobs\%{_jobs_list::%{_jobs.list.number}%}%"
+							set {_size.jobs} to size of file "plugins/killian6341_config/jobs/jobs/%{_jobs_list::%{_jobs.list.number}%}%"
 							replace all "KB" with "Ko" in {_size.jobs}
 							replace all "MB" with "Mo" in {_size.jobs}
 							replace all "GB" with "Go" in {_size.jobs}
@@ -1217,6 +1217,8 @@ command /ajobs [<text>] [<text>]:
 		else:	
 			send "&8[&4JOBS&8] &4Erreur: &6Jobs n'est pas actif ici."
 on chat:
+	if player is not in world "world":
+		send "&8[&6JOBS&8] &4Erreur: &cJobs est désactivé ici!."
 	if world of player is equal to "world":
 		if {editor.mode.%player%} is set:
 			cancel event
@@ -1227,7 +1229,7 @@ on chat:
 				delete {last.name.of.yaml.jobs.%player%}
 				send player title "&9JOBS" with subtitle "&6Vous avez quitter le mode de création." for 1 second
 		if {editor.mode.%player%} is 0:
-			if file "plugins\killian6341_config\jobs\jobs\%message%" exists:
+			if file "plugins/killian6341_config/jobs/jobs/%message%" exists:
 				send player title "&4&lERREUR" with subtitle "&6Ce job éxiste déjà." for 4 second
 				wait 3 second
 				send player title "&9Étape 1" with subtitle "&6Entrer un nom de métier dans le chat." for 99 second
@@ -1238,11 +1240,11 @@ on chat:
 			else:
 				set {last.name.of.yaml.jobs.%player%} to message
 				send player title "&9Étape 1" with subtitle "&6Copie du fichier..." for 1 second
-				copy file "plugins\killian6341_config\jobs\seed\temp.yml" to "plugins\killian6341_config\jobs\jobs\"
+				copy file "plugins/killian6341_config/jobs/seed/temp.yml" to "plugins/killian6341_config/jobs/jobs/"
 				download from "https://drive.google.com/uc?export=download&id=0B2y_lcANJO7tSE9vVDZXNG5PTms" to "plugins/killian6341_config/jobs/jobs/"
 				wait 5 tick
 				send player title "&9Étape 1" with subtitle "&6Chargement en cours..." for 10 second
-				rename file "plugins\killian6341_config\jobs\jobs\temp.yml" to "%{last.name.of.yaml.jobs.%player%}%.yml"
+				rename file "plugins/killian6341_config/jobs/jobs/temp.yml" to "%{last.name.of.yaml.jobs.%player%}%.yml"
 				wait 5 tick
 				set "metier" to "%{last.name.of.yaml.jobs.%player%}%" in yaml file "plugins/killian6341_config/jobs/jobs/%{last.name.of.yaml.jobs.%player%}%.yml"
 				send player title "&9Étape 1" with subtitle "&6Fichier créer..." for 10 second
