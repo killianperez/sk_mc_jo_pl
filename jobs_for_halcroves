@@ -1217,8 +1217,6 @@ command /ajobs [<text>] [<text>]:
 		else:	
 			send "&8[&4JOBS&8] &4Erreur: &6Jobs n'est pas actif ici."
 on chat:
-	if player is not in world "world":
-		send "&8[&6JOBS&8] &4Erreur: &cJobs est désactivé ici!."
 	if world of player is equal to "world":
 		if {editor.mode.%player%} is set:
 			cancel event
