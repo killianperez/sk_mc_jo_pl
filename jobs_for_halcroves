@@ -1,0 +1,1255 @@
+# -------------------------------#
+# COFFRE OUVERT PAR LE J
+# 00 01 02 03 04 05 06 07 08
+# 09 10 11 12 13 14 15 16 17
+# 18 19 20 21 22 23 24 25 26
+# 27 28 29 30 31 32 33 34 35
+# 36 37 38 39 40 41 42 43 44
+# 45 46 47 48 49 50 51 52 53
+# INVENTAIRE DU JOUEUR
+# 54 55 56 57 58 59 60 61 62
+# 63 64 65 66 67 68 69 70 71
+# 72 73 74 75 76 77 78 79 80
+# ACTION BAR DU JOUEUR
+# 81 82 83 84 85 86 87 88 89
+# -------------------------------#
+# VOUS POUVEZ EFFACER LES VARIABLES.CSV
+# A TOUT MOMENT. IL N'EST PAS POSSIBLE
+# DE CORROMPRE LE PLUGIN A CAUSE DE CECI
+# LE PLUGIN EST PREVUT POUR
+# -------------------------------#
+# --- STATISTIQUES DU CODE ---
+#
+# LENGTH : 67600+
+# LINES: 1100+
+# TYPE: DOS\WINDOWS
+# WRITED: UTF-8
+# RUP: INS
+# -------------------------------#
+# function createJobsdropHead(p: player, data: text):
+	# drop player head with nbt "%{_data}%" {_p}'s location
+every 10 second:
+	set {jobs.0X1} to single value "ggn_pos" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X2} to single value "ggn_zer" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X3} to single value "ggn_neg" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X41} to single value "allowed_world_1" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X42} to single value "allowed_world_2" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X43} to single value "allowed_world_3" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X44} to single value "allowed_world_4" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X45} to single value "allowed_world_5" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X46} to single value "allowed_world_6" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X47} to single value "allowed_world_7" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X48} to single value "allowed_world_8" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X49} to single value "allowed_world_9" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X41} to {jobs.0X41} parsed as text
+	set {jobs.0X410} to single value "allowed_world_10" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X5} to single value "prix_singulier" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X6} to single value "prix_pluriel" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X7} to single value "pric_singulier" get of "plugins/killian6341_config/jobs/config.yml"
+	set {jobs.0X8} to single value "pric_pluriel" get of "plugins/killian6341_config/jobs/config.yml"
+on place:
+	if world of player is equal to {jobs.0X41} or {jobs.0X42} or {jobs.0X43} or {jobs.0X44} or {jobs.0X45} or {jobs.0X46} or {jobs.0X47} or {jobs.0X48} or {jobs.0X49} or {jobs.0X410}:
+		set {_PLACE::*} to configuration section "Place" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		loop {_PLACE::*}:
+			add 1 to {_loop.number}
+			set {_PLACE2::*} to configuration section "Place.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_PLACE3} to single value "Place.%loop-value%.%{_PLACE2::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_PLACE4} to single value "Place.%loop-value%.%{_PLACE2::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_block} to convert text "%block%" to uppercase
+			set {_block²} to loop-value
+			if {_block²} = {_block}:
+				set {_PLACE3} to {_PLACE3} parsed as number
+				set {_PLACE4} to {_PLACE4} parsed as number
+				add {_PLACE3} to player's balance
+				loop {_PLACE4} times:
+					give experience bottle named "&2&oJOBS récompense" to player
+					wait 1 tick
+				if {_PLACE3} < 0:
+					set action bar of player to "&7%{jobs.0X3}% %{_PLACE3}%€"
+				if {_PLACE3} > 0:
+					set action bar of player to "&7%{jobs.0X1}% +%{_PLACE3}%€"
+				if {_PLACE3} = 0:
+					set action bar of player to "&7%{jobs.0X2}% %{_PLACE3}%€"
+			if {debug.jobs} is true:
+				send "plugin &7DEBUG MODE PLACE : &1%{_PLACE::*}% &2%{_loop.number}% &3%{_PLACE2::*}% &4%{_PLACE3}% &5%{_PLACE4}% &6%{_block}% &7%{_block²}%"
+		stop
+on break:
+	if world of player is equal to {jobs.0X41} or {jobs.0X42} or {jobs.0X43} or {jobs.0X44} or {jobs.0X45} or {jobs.0X46} or {jobs.0X47} or {jobs.0X48} or {jobs.0X49} or {jobs.0X410}:
+		set {_loc} to location of target block
+		set {_loc2} to player's location
+		set {_break::*} to configuration section "Break" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		loop {_break::*}:
+			add 1 to {_loop.number}
+			set {_break2::*} to configuration section "Break.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_break3} to single value "Break.%loop-value%.%{_break2::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_break4} to single value "Break.%loop-value%.%{_break2::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_break5} to single value "Break.%loop-value%.%{_break2::3}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_break5} to {_break5} parsed as number
+			set {_block} to convert text "%event-block%" to uppercase
+			set {_block²} to loop-value
+			set {_break7} to line {_break} parsed as item
+			set {block} to {_block}
+			if {_block²} = {_block}:
+				cancel event
+				loop {_break5} times:
+					set block to {_block}
+					drop 1 of block 
+					# teleport player to {_loc2}
+				set block at {_loc} to air
+				delete {block}
+				set {_break3} to {_break3} parsed as number
+				set {_break4} to {_break4} parsed as number
+				add {_break3} to player's balance
+				loop {_break4} times:
+					give experience bottle named "&2&oJOBS récompense" to player
+					wait 1 tick
+				add {_break4} to the spawned experience
+				if {_break3} < 0:
+					set action bar of player to "&7%{jobs.0X3}% %{_break3}%€"
+				if {_break3} > 0:
+					set action bar of player to "&7%{jobs.0X1}% +%{_break3}%€"
+				if {_break3} = 0:
+					set action bar of player to "&7%{jobs.0X2}% %{_break3}%€"
+			if {debug.jobs} is true:
+				send "plugin &7DEBUG MODE break : &1%{_break::*}% &2%{_loop.number}% &3%{_break2::*}% &4%{_break3}% &5%{_break4}% &6%{_block}% &7%{_block²}% &8%{_break5}% &9%event-block%"
+		stop
+on enchant: 
+	if world of player is equal to {jobs.0X41} or {jobs.0X42} or {jobs.0X43} or {jobs.0X44} or {jobs.0X45} or {jobs.0X46} or {jobs.0X47} or {jobs.0X48} or {jobs.0X49} or {jobs.0X410}:
+		set {_Enchanting::*} to configuration section "Enchanting" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		loop {_Enchanting::*}:
+			add 1 to {_loop.number}
+			set {_Enchanting2::*} to configuration section "Enchanting.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_Enchanting3} to single value "Enchanting.%loop-value%.%{_Enchanting2::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_Enchanting4} to single value "Enchanting.%loop-value%.%{_Enchanting2::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_block} to convert text "%event-item%" to uppercase
+			set {_block²} to loop-value
+			if {_block²} = {_block}:
+				set {_Enchanting3} to {_Enchanting3} parsed as number
+				set {_Enchanting4} to {_Enchanting4} parsed as number
+				add {_Enchanting3} to player's balance
+				loop {_Enchanting4} times:
+					give experience bottle named "&2&oJOBS récompense" to player
+					wait 1 tick
+				if {_Enchanting3} < 0:
+					set action bar of player to "&7%{jobs.0X3}% %{_Enchanting3}%€"
+				if {_Enchanting3} > 0:
+					set action bar of player to "&7%{jobs.0X1}% +%{_Enchanting3}%€"
+				if {_Enchanting3} = 0:
+					set action bar of player to "&7%{jobs.0X2}% %{_Enchanting3}%€"
+			
+on anvil combine:
+	if world of player is equal to {jobs.0X41} or {jobs.0X42} or {jobs.0X43} or {jobs.0X44} or {jobs.0X45} or {jobs.0X46} or {jobs.0X47} or {jobs.0X48} or {jobs.0X49} or {jobs.0X410}:
+		set {_Repair::*} to configuration section "Repair" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		loop {_Repair::*}:
+			add 1 to {_loop.number}
+			set {_Repair2::*} to configuration section "Repair.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_Repair3} to single value "Repair.%loop-value%.%{_Repair2::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_Repair4} to single value "Repair.%loop-value%.%{_Repair2::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_block} to convert text "%event-item-result%" to uppercase
+			send "%event-item-result%"
+			set {_block²} to loop-value
+			if {_block²} = {_block}:
+				set {_Repair3} to {_Repair3} parsed as number
+				set {_Repair4} to {_Repair4} parsed as number
+				add {_Repair3} to player's balance
+				loop {_Repair4} times:
+					give experience bottle named "&2&oJOBS récompense" to player
+					wait 1 tick
+				if {_Repair3} < 0:
+					set action bar of player to "&7%{jobs.0X3}% %{_Repair3}%€"
+				if {_Repair3} > 0:
+					set action bar of player to "&7%{jobs.0X1}% +%{_Repair3}%€"
+				if {_Repair3} = 0:
+					set action bar of player to "&7%{jobs.0X2}% %{_Repair3}%€"
+				
+on fishing:
+	if world of player is equal to {jobs.0X41} or {jobs.0X42} or {jobs.0X43} or {jobs.0X44} or {jobs.0X45} or {jobs.0X46} or {jobs.0X47} or {jobs.0X48} or {jobs.0X49} or {jobs.0X410}:
+		set {_Fishing::*} to configuration section "Fishing" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		loop {_Fishing::*}:
+			add 1 to {_loop.number}
+			set {_Fishing2::*} to configuration section "Fishing.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_Fishing3} to single value "Fishing.%loop-value%.%{_Fishing2::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_Fishing4} to single value "Fishing.%loop-value%.%{_Fishing2::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_Fishing5} to single value "Fishing.%loop-value%.%{_Fishing2::5}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_block} to convert text "%items within caught entity%" to uppercase
+			replace all " " with "_" in {_block}
+			set {_block²} to loop-value
+			if {_block²} = {_block}:
+				set {_Fishing3} to {_Fishing3} parsed as number
+				set {_Fishing4} to {_Fishing4} parsed as number
+				add {_Fishing3} to player's balance
+				loop {_Fishing4} times:
+					give experience bottle named "&2&oJOBS récompense" to player
+					wait 1 tick
+				if {_Fishing3} < 0:
+					set action bar of player to "&7%{jobs.0X3}% %{_Fishing3}%€"
+				if {_Fishing3} > 0:
+					set action bar of player to "&7%{jobs.0X1}% +%{_Fishing3}%€"
+				if {_Fishing3} = 0:
+					set action bar of player to "&7%{jobs.0X2}% %{_Fishing3}%€"
+			if {debug.jobs} is true:
+				send "plugin &7DEBUG : &1%fishing state% &2%caught entity% &3%items within caught entity% &4%caught entity% &5%fishing hook% &6%caught fish%"
+			
+on death:
+	if world of player is equal to {jobs.0X41} or {jobs.0X42} or {jobs.0X43} or {jobs.0X44} or {jobs.0X45} or {jobs.0X46} or {jobs.0X47} or {jobs.0X48} or {jobs.0X49} or {jobs.0X410}:
+		set {_Kill::*} to configuration section "Kill" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%attacker%}%.yml"
+		loop {_Kill::*}:
+			add 1 to {_loop.number}
+			set {_Kill2::*} to configuration section "Kill.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%attacker%}%.yml"
+			set {_Kill3} to single value "Kill.%loop-value%.%{_Kill2::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%attacker%}%.yml"
+			set {_Kill4} to single value "Kill.%loop-value%.%{_Kill2::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%attacker%}%.yml"
+			set {_Kill5} to single value "Kill.%loop-value%.%{_Kill2::3}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%attacker%}%.yml"
+			if victim is a player:
+				set {_block} to convert text "player" to uppercase
+			if victim is not a player:
+				set {_block} to convert text "%victim%" to uppercase
+			send "%{_block}%"
+			set {_block²} to loop-value
+			if {_block²} = {_block}:
+				set {_Kill3} to {_Kill3} parsed as number
+				set {_Kill4} to {_Kill4} parsed as number
+				add {_Kill3} to attacker's balance
+				loop {_Kill4} times:
+					give experience bottle named "&2&oJOBS récompense" to player
+					wait 1 tick
+				# if {_Kill5} is true:
+					# if victim is a player:
+						# drop victim head
+					# if victim is not a player:
+						# if victim is a BLAZE:
+							# createJobsdropHead(player, "{display:{Name:""Blaze""},SkullOwner:{Id:""7ceb88b2-7f5f-4399-abb9-7068251baa9d"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjc4ZWYyZTRjZjJjNDFhMmQxNGJmZGU5Y2FmZjEwMjE5ZjViMWJmNWIzNWE0OWViNTFjNjQ2Nzg4MmNiNWYwIn19fQ==""}]}}}")
+						# if victim is a CAVE SPIDER:
+							# createJobsdropHead(player, "{display:{Name:""Cave Spider""},SkullOwner:{Id:""39173a7a-c957-4ec1-ac1a-43e5a64983df"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDE2NDVkZmQ3N2QwOTkyMzEwN2IzNDk2ZTk0ZWViNWMzMDMyOWY5N2VmYzk2ZWQ3NmUyMjZlOTgyMjQifX19""}]}}}")
+						# if victim is a GHAST:
+							# createJobsdropHead(player, "{display:{Name:""Ghast""},SkullOwner:{Id:""807f287f-6499-4e93-a887-0a298ab3091f"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGI2YTcyMTM4ZDY5ZmJiZDJmZWEzZmEyNTFjYWJkODcxNTJlNGYxYzk3ZTVmOTg2YmY2ODU1NzFkYjNjYzAifX19""}]}}}")
+						# if victim is a ENDERMAN:
+							# createJobsdropHead(player, "{display:{Name:""Enderman""},SkullOwner:{Id:""0de98464-1274-4dd6-bba8-370efa5d41a8"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2E1OWJiMGE3YTMyOTY1YjNkOTBkOGVhZmE4OTlkMTgzNWY0MjQ1MDllYWRkNGU2YjcwOWFkYTUwYjljZiJ9fX0=""}]}}}")
+						# if victim is a SLIME:
+							# createJobsdropHead(player, "{display:{Name:""Slime""},SkullOwner:{Id:""9aca565d-105c-4e8c-81fc-740545cb74b2"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTZhZDIwZmMyZDU3OWJlMjUwZDNkYjY1OWM4MzJkYTJiNDc4YTczYTY5OGI3ZWExMGQxOGM5MTYyZTRkOWI1In19fQ==""}]}}}")
+						# if victim is a SPIDER:
+							# createJobsdropHead(player, "{display:{Name:""Spider""},SkullOwner:{Id:""8bdb71d0-4724-48b2-9344-e79480424798"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2Q1NDE1NDFkYWFmZjUwODk2Y2QyNThiZGJkZDRjZjgwYzNiYTgxNjczNTcyNjA3OGJmZTM5MzkyN2U1N2YxIn19fQ==""}]}}}")
+						# if victim is a CHICKEN:
+							# createJobsdropHead(player, "{display:{Name:""Chicken""},SkullOwner:{Id:""7d3a8ace-e045-4eba-ab71-71dbf525daf1"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTYzODQ2OWE1OTljZWVmNzIwNzUzNzYwMzI0OGE5YWIxMWZmNTkxZmQzNzhiZWE0NzM1YjM0NmE3ZmFlODkzIn19fQ==""}]}}}")
+						# if victim is a PIG:
+							# createJobsdropHead(player, "{display:{Name:""Pig""},SkullOwner:{Id:""e1e1c2e4-1ed2-473d-bde2-3ec718535399"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjIxNjY4ZWY3Y2I3OWRkOWMyMmNlM2QxZjNmNGNiNmUyNTU5ODkzYjZkZjRhNDY5NTE0ZTY2N2MxNmFhNCJ9fX0=""}]}}}")
+						# if victim is a SHEEP:
+							# createJobsdropHead(player, "{display:{Name:""Sheep""},SkullOwner:{Id:""fa234925-9dbe-4b8f-a544-7c70fb6b6ac5"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjMxZjljY2M2YjNlMzJlY2YxM2I4YTExYWMyOWNkMzNkMThjOTVmYzczZGI4YTY2YzVkNjU3Y2NiOGJlNzAifX19""}]}}}")
+						# if victim is a COW:
+							# createJobsdropHead(player, "{display:{Name:""Cow""},SkullOwner:{Id:""97ddf3b3-9dbe-4a3b-8a0f-1b19ddeac0bd"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWQ2YzZlZGE5NDJmN2Y1ZjcxYzMxNjFjNzMwNmY0YWVkMzA3ZDgyODk1ZjlkMmIwN2FiNDUyNTcxOGVkYzUifX19""}]}}}")
+						# if victim is a SQUID:
+							# createJobsdropHead(player, "{display:{Name:""Squid""},SkullOwner:{Id:""f95d9504-ea2b-4b89-b2d0-d400654a7010"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMDE0MzNiZTI0MjM2NmFmMTI2ZGE0MzRiODczNWRmMWViNWIzY2IyY2VkZTM5MTQ1OTc0ZTljNDgzNjA3YmFjIn19fQ==""}]}}}")
+						# if victim is a VILLAGER:
+							# createJobsdropHead(player, "{display:{Name:""Villager""},SkullOwner:{Id:""0a9e8efb-9191-4c81-80f5-e27ca5433156"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODIyZDhlNzUxYzhmMmZkNGM4OTQyYzQ0YmRiMmY1Y2E0ZDhhZThlNTc1ZWQzZWIzNGMxOGE4NmU5M2IifX19""}]}}}")
+						# if victim is a IRON GOLEM:
+							# createJobsdropHead(player, : ""{display:{Name:"Golem"},SkullOwner:{Id:"7cb6e9a5-994f-40d5-9bfc-4ba5d796d21e",Properties:{textures:[{Value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODkwOTFkNzllYTBmNTllZjdlZjk0ZDdiYmE2ZTVmMTdmMmY3ZDQ1NzJjNDRmOTBmNzZjNDgxOWE3MTQifX19"}]}}})
+						# if victim is a MUSHROOM COW:
+							# createJobsdropHead(player, "{display:{Name:""Mushroom Cow""},SkullOwner:{Id:""e206ac29-ae69-475b-909a-fb523d894336"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDBiYzYxYjk3NTdhN2I4M2UwM2NkMjUwN2EyMTU3OTEzYzJjZjAxNmU3YzA5NmE0ZDZjZjFmZTFiOGRiIn19fQ==""}]}}}")
+						# if victim is a OCELOT:
+							# createJobsdropHead(player, "{display:{Name:""Ocelot""},SkullOwner:{Id:""664dd492-3fcd-443b-9e61-4c7ebd9e4e10"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTY1N2NkNWMyOTg5ZmY5NzU3MGZlYzRkZGNkYzY5MjZhNjhhMzM5MzI1MGMxYmUxZjBiMTE0YTFkYjEifX19""}]}}}")
+						# if victim is a GUARDIAN:
+							# createJobsdropHead(player, "{display:{Name:""Guardian""},SkullOwner:{Id:""2e9c0a67-92b3-4949-9be1-faf12318ee88"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTMyYzI0NTI0YzgyYWIzYjNlNTdjMjA1MmM1MzNmMTNkZDhjMGJlYjhiZGQwNjM2OWJiMjU1NGRhODZjMTIzIn19fQ==""}]}}}")
+						# if victim is a WITHER:
+							# createJobsdropHead(player, "{display:{Name:""Wither Boss""},SkullOwner:{Id:""119c371b-ea16-47c9-ad7f-23b3d894520a"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2RmNzRlMzIzZWQ0MTQzNjk2NWY1YzU3ZGRmMjgxNWQ1MzMyZmU5OTllNjhmYmI5ZDZjZjVjOGJkNDEzOWYifX19""}]}}}")
+						# if victim is a CREEPER:
+							# drop creeper head
+						# if victim is a ZOMBIE:
+							# drop zombie head
+						# if victim is a SKELETON:
+							drop skeleton head
+						
+				if {_Kill3} < 0:
+					set action bar of player to "&7%{jobs.0X3}% %{_Kill3}%€"
+				if {_Kill3} > 0:
+					set action bar of player to "&7%{jobs.0X1}% +%{_Kill3}%€"
+				if {_Kill3} = 0:
+					set action bar of player to "&7%{jobs.0X2}% %{_Kill3}%€"
+			if {debug.jobs} is true:
+				send "plugin &7DEBUG : &1%victim% &2%attacker%"
+			
+on inventory click:
+	if world of player is equal to {jobs.0X41} or {jobs.0X42} or {jobs.0X43} or {jobs.0X44} or {jobs.0X45} or {jobs.0X46} or {jobs.0X47} or {jobs.0X48} or {jobs.0X49} or {jobs.0X410}:
+		set {_inventory.type} to  "%inventory type of clicked inventory%"
+		if {_inventory.type} = "WORKBENCH":
+			set {_Craft::*} to configuration section "Craft" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			if clicked slot type is RESULT:
+				loop {_Craft::*}:
+					add 1 to {_loop.number}
+					set {_Craft2::*} to configuration section "Craft.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+					set {_Craft3} to single value "Craft.%loop-value%.%{_Craft2::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+					set {_Craft4} to single value "Craft.%loop-value%.%{_Craft2::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+					set {_block} to convert text "%clicked item%" to uppercase
+					set {_block²} to loop-value
+					if {_block²} = {_block}:
+						set {_Craft3} to {_Craft3} parsed as number
+						set {_Craft4} to {_Craft4} parsed as number
+						add {_Craft3} to player's balance
+						loop {_Craft4} times:
+							give experience bottle named "&2&oJOBS récompense" to player
+							wait 1 tick
+						if {_Craft3} < 0:
+							set action bar of player to "&7%{jobs.0X3}% %{_Craft3}%€"
+						if {_Craft3} > 0:
+							set action bar of player to "&7%{jobs.0X1}% +%{_Craft3}%€"
+						if {_Craft3} = 0:
+							set action bar of player to "&7%{jobs.0X2}% %{_Craft3}%€"
+						stop
+		if {_inventory.type} = "FURNACE":
+			set {_Smelt::*} to configuration section "Smelt" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			loop {_Smelt::*}:
+				if clicked slot type is RESULT:
+					add 1 to {_loop.number}
+					set {_Smelt2::*} to configuration section "Smelt.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+					set {_Smelt3} to single value "Smelt.%loop-value%.%{_Smelt2::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+					set {_Smelt4} to single value "Smelt.%loop-value%.%{_Smelt2::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+					set {_block} to convert text "%clicked item%" to uppercase
+					set {_block²} to loop-value
+					if {_block²} = {_block}:
+						set {_Smelt3} to {_Smelt3} parsed as number
+						set {_Smelt4} to {_Smelt4} parsed as number
+						add {_Smelt3} to player's balance
+						loop {_Smelt4} times:
+							give experience bottle named "&2&oJOBS récompense" to player
+							wait 1 tick
+						if {_Smelt3} < 0:
+							set action bar of player to "&7%{jobs.0X3}% %{_Smelt3}%€"
+						if {_Smelt3} > 0:
+							set action bar of player to "&7%{jobs.0X1}% +%{_Smelt3}%€"
+						if {_Smelt3} = 0:
+							set action bar of player to "&7%{jobs.0X2}% %{_Smelt3}%€"
+						stop
+					if {debug.jobs} is true:
+						send "plugin &7DEBUG : &1%{_block}% "
+		if {debug.jobs} is true:
+			send "plugin &7DEBUG : &1%clicked action% &2%clicked inventory% &3%clicked cursor% &4%clicked item% &5%name of clicked item% &6%clicked slot type% &7%clicked type% &8%clicked type number% &9%clicked slot type%"
+
+#! on breeding:
+	#! set {_Breed::*} to configuration section "Breed" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+	#! loop {_Breed::*}:
+		#! add 1 to {_loop.number}
+		#! set {_Breed2::*} to configuration section "Breed.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		#! set {_Breed3} to single value "Breed.%loop-value%.%{_Breed2::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		#! set {_Breed4} to single value "Breed.%loop-value%.%{_Breed2::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		#! set {_block} to convert text "%breeder%" to uppercase
+		#! replace all " " with "_" in {_block}
+		#! set {_block²} to loop-value
+		#! if {_block²} = {_block}:
+			#! set {_Breed3} to {_Breed3} parsed as number
+			#! set {_Breed4} to {_Breed4} parsed as number
+			#! add {_Breed3} to player's balance
+			#! add {_Breed4} to xp of player
+			#! set action bar of player to "&7%{jobs.0X1}% +%{_Breed3}%€"
+	#! if {debug.jobs} is true:
+		#! send "plugin &7DEBUG : &1%breed item used% &2%breeder% &3%final breeded entity% &4%breeding experience% &5%bred father% &6%bred mother% "
+		
+			
+# !on tame:
+	# !set {_Tame::*} to configuration section "Tame" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+	# !loop {_Tame::*}:
+		# !add 1 to {_loop.number}
+		# !set {_Tame2::*} to configuration section "Tame.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		# !set {_Tame3} to single value "Tame.%loop-value%.%{_Tame2::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		# !set {_Tame4} to single value "Tame.%loop-value%.%{_Tame2::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		# !set {_Tame5} to single value "Tame.%loop-value%.%{_Tame2::5}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		# !set {_block} to convert text "%items within caught entity%" to uppercase
+		# !replace all " " with "_" in {_block}
+		# !set {_block²} to loop-value
+		# !if {_block²} = {_block}:
+			# !set {_Tame3} to {_Tame3} parsed as number
+			# !set {_Tame4} to {_Tame4} parsed as number
+			# !add {_Tame3} to player's balance
+			# !add {_Tame4} to xp of player
+			# !set action bar of player to "&7%{jobs.0X1}% +%{_Tame3}%€"
+		# !if {debug.jobs} is true:
+			# !send "plugin &7DEBUG : &1%Tame state% &2%caught entity% &3%items within caught entity% &4%caught entity% &5%Tame hook% &6%caught fish%"
+			
+on right click on a cow:
+	if world of player is equal to {jobs.0X41} or {jobs.0X42} or {jobs.0X43} or {jobs.0X44} or {jobs.0X45} or {jobs.0X46} or {jobs.0X47} or {jobs.0X48} or {jobs.0X49} or {jobs.0X410}:
+		set {_Milk::*} to configuration section "Milk" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		loop {_Milk::*}:
+			add 1 to {_loop.number}
+			set {_Milk3} to single value "Milk.%{_Milk::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_Milk4} to single value "Milk.%{_Milk::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_block} to convert text "WH_NONE_SSS_OF_DEBUG_MILK" to uppercase
+			replace all " " with "_" in {_block}
+			if player is holding a empty bucket:
+				set {_Milk3} to {_Milk3} parsed as number
+				set {_Milk4} to {_Milk4} parsed as number
+				add {_Milk3} to player's balance
+				loop {_Milk4} times:
+					give experience bottle named "&2&oJOBS récompense" to player
+					wait 1 tick
+				if {_Milk3} < 0:
+					set action bar of player to "&7%{jobs.0X3}% %{_Milk3}%€"
+				if {_Milk3} > 0:
+					set action bar of player to "&7%{jobs.0X1}% +%{_Milk3}%€"
+				if {_Milk3} = 0:
+					set action bar of player to "&7%{jobs.0X2}% %{_Milk3}%€"
+		if {debug.jobs} is true:
+			send "plugin &7DEBUG : &1%{_block}%"
+			
+# !on inventory click:
+	# !if clicked slot type is RESULT:
+		# !set {_Dye::*} to configuration section "Dye" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		# !loop {_Dye::*}:
+			# !add 1 to {_loop.number}
+			# !set {_Dye2::*} to configuration section "Dye.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			# !loop {_Dye2::*}:
+				# !set {_Dye3::*} to configuration section "Dye.%loop-value-1%.%loop-value-2%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+				# !set {_Dye3} to single value "Dye.%loop-value-1%.%loop-value-2%.%{_Dye3::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+				# !set {_Dye4} to single value "Dye.%loop-value-1%.%loop-value-2%.%{_Dye3::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+				# !set {_block} to convert text "%clicked item%" to uppercase
+				# !replace all " " with "_" in {_block}
+				# !set {_color} to convert text "%colour of clicked item%" to uppercase
+				# !set {_block²} to loop-value-1
+				# !replace all " " with "_" in {_block}
+				# !set {_color²} to loop-value-2
+				# !if {_color} = {_color²}:
+					# !if {_block²} = {_block}:
+						# !set {_Dye3} to {_Dye3} parsed as number
+						# !set {_Dye4} to {_Dye4} parsed as number
+						# !add {_Dye3} to player's balance
+						# !add {_Dye4} to xp of player
+						# !set action bar of player to "&7%{jobs.0X1}% +%{_Dye3}%€"
+	# !if {debug.jobs} is true:
+		# !send "plugin &7DEBUG : &1%clicked item% &2%colour of clicked item% &3%nbt tag compound%"
+			
+# !on shear:
+	# !send "&4&lCOLOURED!!"
+	# !set {_Shear::*} to configuration section "Shear" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+	# !loop {_Shear::*}:
+		# !add 1 to {_loop.number}
+		# !set {_Shear2::*} to configuration section "Shear.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		# !set {_Shear3} to single value "Shear.%loop-value%.%{_Shear2::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		# !set {_Shear4} to single value "Shear.%loop-value%.%{_Shear2::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		# !set {_Shear5} to single value "Shear.%loop-value%.%{_Shear2::5}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		# !set {_block} to convert text "%color of the sheep%" to uppercase
+		# !replace all " " with "_" in {_block}
+		# !set {_block²} to loop-value
+		# !if {_block²} = {_block}:
+			# !set {_Shear3} to {_Shear3} parsed as number
+			# !set {_Shear4} to {_Shear4} parsed as number
+			# !add {_Shear3} to player's balance
+			# !add {_Shear4} to xp of player
+			# !set action bar of player to "&7%{jobs.0X1}% +%{_Shear3}%€"
+	# !if {debug.jobs} is true:
+		# !send "plugin &7DEBUG : &1%color of the sheep%"
+			
+every 4 tick:
+	loop all players:
+		if world of loop-player is equal to {jobs.0X41} or {jobs.0X42} or {jobs.0X43} or {jobs.0X44} or {jobs.0X45} or {jobs.0X46} or {jobs.0X47} or {jobs.0X48} or {jobs.0X49} or {jobs.0X410}:
+			set {_loc} to loop-player's location
+			wait 3 tick
+			set {_loc2} to loop-player's location
+			if {_loc} is not equal to {_loc2}:
+				# if time in the loop-player's world is greater than 8:00
+				set {_Explore::*} to configuration section "Explore" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%loop-player%}%.yml"
+				loop {_Explore::*}:
+					add 1 to {_loop.number}
+					set {_Explore2::*} to configuration section "Explore.%loop-value-2%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%loop-player%}%.yml"
+					set {_Explore3} to single value "Explore.%loop-value-2%.%{_Explore2::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%loop-player%}%.yml"
+					set {_Explore4} to single value "Explore.%loop-value-2%.%{_Explore2::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%loop-player%}%.yml"
+					replace all " " with "_" in {_block}
+					set {_block²} to loop-value-2
+					if {_block²} = "BLOCK":
+						set {_Explore3} to {_Explore3} parsed as number
+						set {_Explore4} to {_Explore4} parsed as number
+						set {_Explore31} to {_Explore3}
+						add {_Explore31} to loop-player's balance
+						loop {_Explore4} times:
+							give experience bottle named "&2&oJOBS récompense" to loop-player
+							wait 1 tick
+						if {_Explore3} < 0:
+							set action bar of loop-player to "&7%{jobs.0X3}%&4 %{_Explore3}%€"
+						if {_Explore3} > 0:
+							set action bar of loop-player to "&7%{jobs.0X1}%&2 +%{_Explore3}%€"
+						if {_Explore3} = 0:
+							set action bar of loop-player to "&7%{jobs.0X2}%&6 %{_Explore3}%€"
+			# if {debug.jobs} is true:
+				# send "debug &7%loop-player's location%, w: %yaw of loop-player's location%, p: %pitch of loop-player's location%"
+			set {_loc} to chunk at the loop-player
+			set {old_chunk_o_%loop-player%} to {_loc}
+			wait 3 tick
+			set {_loc2} to chunk at the loop-player
+			if {_loc} is not equal to {_loc2}:
+				if {_loc2} is not equal to {old_chunk_o_%loop-player%}:
+					set {_Explore::*} to configuration section "Explore" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%loop-player%}%.yml"
+					loop {_Explore::*}:
+						add 1 to {_loop.number}
+						set {_Explore2::*} to configuration section "Explore.%loop-value-2%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%loop-player%}%.yml"
+						set {_Explore3} to single value "Explore.%loop-value-2%.%{_Explore2::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%loop-player%}%.yml"
+						set {_Explore4} to single value "Explore.%loop-value-2%.%{_Explore2::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%loop-player%}%.yml"
+						replace all " " with "_" in {_block}
+						set {_block²} to loop-value-2
+						if {_block²} = "CHUNK":
+							set {_Explore3} to {_Explore3} parsed as number
+							set {_Explore4} to {_Explore4} parsed as number
+							set {_Explore31} to {_Explore3}
+							add {_Explore31} to loop-player's balance
+							loop {_Explore4} times:
+								give experience bottle named "&2&oJOBS récompense" to loop-player
+								wait 1 tick
+							if {_Explore3} < 0:
+								set action bar of loop-player to "&4%{jobs.0X3}% %{_Explore3}%€"
+							if {_Explore3} > 0:
+								set action bar of loop-player to "&2%{jobs.0X1}% +%{_Explore3}%€"
+							if {_Explore3} = 0:
+								set action bar of loop-player to "&6%{jobs.0X2}% %{_Explore3}%€"
+on any move:
+	if world of player is equal to {jobs.0X41} or {jobs.0X42} or {jobs.0X43} or {jobs.0X44} or {jobs.0X45} or {jobs.0X46} or {jobs.0X47} or {jobs.0X48} or {jobs.0X49} or {jobs.0X410}:
+		if {debug.jobs} is true:
+			send action bar from "plugin &7DEBUG : %player's location%, w: %player's yaw%, p: %player's pitch%, c: %{old_chunk_o_%player%}%" to player
+on eat:
+	if world of player is equal to {jobs.0X41} or {jobs.0X42} or {jobs.0X43} or {jobs.0X44} or {jobs.0X45} or {jobs.0X46} or {jobs.0X47} or {jobs.0X48} or {jobs.0X49} or {jobs.0X410}:
+		set {_Eat::*} to configuration section "Eat" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		loop {_Eat::*}:
+			add 1 to {_loop.number}
+			set {_Eat2::*} to configuration section "Eat.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_Eat3} to single value "Eat.%loop-value%.%{_Eat2::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_Eat4} to single value "Eat.%loop-value%.%{_Eat2::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+			set {_block} to convert text "%item%" to uppercase
+			set {_block²} to loop-value
+			if {_block²} = {_block}:
+				set {_Eat3} to {_Eat3} parsed as number
+				set {_Eat4} to {_Eat4} parsed as number
+				add {_Eat3} to player's balance
+				add {_Eat4} to xp of player
+				set action bar of player to "&7%{jobs.0X1}% +%{_Eat3}%€"
+				stop
+			if {debug.jobs} is true:
+				send "plugin &7DEBUG : &1%{_block}% "
+			
+# on inventory click:
+	# if clicked slot type is "CRAFTING":
+		
+# on inventory click:
+	# set {_brewing::*} to configuration section "Brewing" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+	# loop {_brewing::*}:
+		# add 1 to {_loop.number}
+		# set {_brewing2::*} to configuration section "Brewing.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		# set {_brewing3} to single value "Brewing.%loop-value%.%{_brewing2::1}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		# set {_brewing4} to single value "Brewing.%loop-value%.%{_brewing2::2}%" get of "plugins/killian6341_config/jobs/jobs/%{jobs.a.%player%}%.yml"
+		# send "%clicked slot type%"
+		# set {_block} to convert text "%ingredient of brewing stand inventory event-inventory%" to uppercase
+		# set {_block²} to loop-value
+		# if {_block²} = {_block}:
+			# set {_brewing3} to {_brewing3} parsed as number
+			# set {_brewing4} to {_brewing4} parsed as number
+			# add {_brewing3} to player's balance
+			# add {_brewing4} to xp of player
+			# set action bar of player to "&7%{jobs.0X1}% +%{_brewing3}%€"
+	# stop
+on join:
+	# Cette variable peux-être supprimé à tout moment.
+	set {jobs.a.%player%} to single value "metier" get of "plugins/killian6341_config/jobs/players/%player%.yml"
+on quit:
+	delete {jobs.a.%player%}
+function createTitleErrored(p: player):
+	loop 2000 times:
+		send {_p} title "&4&lErreur : &c&l%{error_trouved}%" with subtitle "&6%{jobs.error.text}%" for 10 second with 0 tick fade in and 0 tick fade out
+		wait 1 tick
+on load:
+	send "JOBS PLUGIN DÉMARRE.. Merci de patienter..." to console
+	if file "plugins/killian6341_config/jobs" doesn't exists:
+		if file "plugins/killian6341_config" doesn't exists:
+			send "[JOBS] Création du dossier pour les plugins de Killian6341..." to console
+			create folder "plugins/killian6341_config"
+			send "[JOBS] &2&lTerminé" to console
+		send "[JOBS] Création du dossier pour JOBS" to console
+		create folder "plugins/killian6341_config/jobs"
+		create folder "plugins/killian6341_config/jobs/players"
+		create folder "plugins/killian6341_config/jobs/jobs"
+		send "[JOBS] &2&lTerminé" to console
+	send "[JOBS] &6Démarrage du plugin..." to console
+command /jobs [<text>] [<text>]:
+	trigger:
+		if world of player is equal to {jobs.0X41} or {jobs.0X42} or {jobs.0X43} or {jobs.0X44} or {jobs.0X45} or {jobs.0X46} or {jobs.0X47} or {jobs.0X48} or {jobs.0X49} or {jobs.0X410}:
+			if player is not in world "world":
+				send "&8[&6JOBS&8] &4Erreur: &cJobs est désactivé ici!."
+			if world of player is equal to "world":
+				if arg 1 is not set:
+					if player has permission "jobs.admin":
+						send "&cVous avez été détecté en tant qu'un administrateur" and "&cUtilisez donc la commande /ajobs"
+					send "&7======= [ JOBS ] ======="
+					send "&6/jobs browse &7- &3Liste tout les métiers"
+					send "&6/jobs info &7- &3Plus d'informations sur les métiers"
+					send "&6/jobs join &7- &3Rejoindre un métier"
+					send "&6/jobs leave &7- &3Quitter un métier"
+				if arg 1 is "leave":
+					if file "plugins/killian6341_config/jobs/players/%player%.yml" exists:
+						df "plugins/killian6341_config/jobs/players/%player%.yml"
+						send "&8[&6JOBS&8] &3Vous n'avez désormais plus de métier."
+						stop
+					if file "plugins/killian6341_config/jobs/players/%player%.yml" doesn't exists:
+						send "&8[&6JOBS&8] &3Vous n'avez déjà pas de métier."
+				if arg 1 is "join":
+					if arg 2 is not set:
+						send "&8[&6JOBS&8] &4Erreur: &cNom du job invalide."
+					if arg 2 is set:
+						set {_jobs_detect::*} to files in "plugins\killian6341_config\jobs\players"
+						replace all ".yml" with "" in {_jobs_detect::*}
+						if {_jobs_detect::*} contain "%player%":
+							send "&8[&6JOBS&8] &4Erreur: &cQuittez un job d'abord."
+							stop
+						set {_jobs_list::*} to files in "plugins\killian6341_config\jobs\jobs"
+						replace all ".yml" with "" in {_jobs_list::*}
+						if {_jobs_list::*} doesn't contain arg-2:
+							send "&8[&6JOBS&8] &4Erreur: &cNom du job invalide."
+							stop
+						create file "plugins/killian6341_config/jobs/players/%player%.yml"
+						wf "metier: ""%arg-2%""" to "plugins/killian6341_config/jobs/players/%player%.yml"
+						set {jobs.a.%player%} to single value "metier" get of "plugins/killian6341_config/jobs/players/%player%.yml"
+						send "&8[&6JOBS&8] &3Vous avez rejoint le métier : %arg-2%."
+				if arg 1 is "info":
+					if arg 2 is not set:
+						send "&4Erreur: &cNom du job invalide."
+					if arg 2 is set:
+						set {_jobs_list::*} to files in "plugins\killian6341_config\jobs\jobs"
+						replace all ".yml" with "" in {_jobs_list::*}
+						if {_jobs_list::%arg-2%} don't contain arg-2:
+							send "&4Erreur: &cNom du job invalide."
+							stop
+						open chest with 6 rows named "&lPlus d'infos sur : %arg-2%" to player
+						wait 3 tick
+						format slot 4 of player with barrier named "&4&lFERMER" to close
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						set {_PLACE::*} to configuration section "Place" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						loop {_PLACE::*}:
+							add 1 to {_loop.number}
+							set {_PLACE2::*} to configuration section "Place.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_PLACE3} to single value "Place.%loop-value%.%{_PLACE2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_PLACE4} to single value "Place.%loop-value%.%{_PLACE2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							add "&7Item : &6%loop-value% &8- &7Gain: &6%{_PLACE3}% Euros &8- &7EXP : &6%{_PLACE4}% xp" to {_estethique::*}
+						set {_hfuifhofh} to "%{_estethique::*}%"
+						replace all ", " and " and " with "||" in {_hfuifhofh}
+						if {_hfuifhofh} is "<none>":
+							set {_hfuifhofh} to "&cCette partie n'est pas utiliser par le métier %arg-2%."
+						format slot 19 of player with brick block named "&4&lLorsque vous placez un bloc." with lore "%{_hfuifhofh}%" to be unstealable
+						clear {_estethique::*}
+						clear {_hfuifhofh}
+							
+						set {_BREAK::*} to configuration section "Break" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_loop.number} to 0
+						loop {_BREAK::*}:
+							add 1 to {_loop.number}
+							set {_BREAK2::*} to configuration section "Break.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_BREAK3} to single value "Break.%loop-value%.%{_BREAK2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_BREAK4} to single value "Break.%loop-value%.%{_BREAK2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_BREAK5} to single value "Break.%loop-value%.%{_BREAK2::3}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							add "&7Item : &6%loop-value% &8- &7Gain: &6%{_BREAK3}% Euros &8- &7EXP : &6%{_BREAK4}% xp &8- &7Stack : &6%{_BREAK5}%" to {_estethique::*}
+						set {_hfuifhofh} to "%{_estethique::*}%"
+						replace all ", " and " and " with "||" in {_hfuifhofh}
+						if {_hfuifhofh} is "<none>":
+							set {_hfuifhofh} to "&cCette partie n'est pas utiliser par le métier %arg-2%."
+						format slot 20 of player with diamond pickaxe named "&4&lLorsque vous cassez un bloc." with lore "%{_hfuifhofh}%" to be unstealable
+						clear {_estethique::*}
+						clear {_hfuifhofh}
+
+						set {_BREWING::*} to configuration section "Brewing" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_loop.number} to 0
+						loop {_BREWING::*}:
+							add 1 to {_loop.number}
+							set {_BREWING2::*} to configuration section "Brewing.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_BREWING3} to single value "Brewing.%loop-value%.%{_BREWING2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_BREWING4} to single value "Brewing.%loop-value%.%{_BREWING2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							add "&7Item : &6%loop-value% &8- &7Gain: &6%{_Brewing3}% Euros &8- &7EXP : &6%{_Brewing4}% xp" to {_estethique::*}
+						set {_hfuifhofh} to "%{_estethique::*}%"
+						replace all ", " and " and " with "||" in {_hfuifhofh}
+						if {_hfuifhofh} is "<none>":
+							set {_hfuifhofh} to "&cCette partie n'est pas utiliser par le métier %arg-2%."
+						format slot 21 of player with water bottle named "&4&lIngrédient utiliser pour faire une potion." with lore "%{_hfuifhofh}%" to be unstealable
+						clear {_estethique::*}
+						clear {_hfuifhofh}
+								
+						set {_Enchanting::*} to configuration section "Enchanting" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_loop.number} to 0
+						loop {_Enchanting::*}:
+							add 1 to {_loop.number}
+							set {_Enchanting2::*} to configuration section "Enchanting.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Enchanting3} to single value "Enchanting.%loop-value%.%{_Enchanting2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Enchanting4} to single value "Enchanting.%loop-value%.%{_Enchanting2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							add "&7Item : &6%loop-value% &8- &7Gain: &6%{_Enchanting3}% Euros &8- &7EXP : &6%{_Enchanting4}% xp" to {_estethique::*}
+						set {_hfuifhofh} to "%{_estethique::*}%"
+						replace all ", " and " and " with "||" in {_hfuifhofh}
+						if {_hfuifhofh} is "<none>":
+							set {_hfuifhofh} to "&cCette partie n'est pas utiliser par le métier %arg-2%."
+						format slot 22 of player with enchantment table named "&4&lLorsque vous enchantez." with lore "%{_hfuifhofh}%" to be unstealable
+						clear {_estethique::*}
+						clear {_hfuifhofh}
+
+						set {_Repair::*} to configuration section "Repair" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_loop.number} to 0
+						loop {_Repair::*}:
+							add 1 to {_loop.number}
+							set {_Repair2::*} to configuration section "Repair.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Repair3} to single value "Repair.%loop-value%.%{_Repair2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Repair4} to single value "Repair.%loop-value%.%{_Repair2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							add "&7Item : &6%loop-value% &8- &7Gain: &6%{_Repair3}% Euros &8- &7EXP : &6%{_Repair4}% xp" to {_estethique::*}
+						set {_hfuifhofh} to "%{_estethique::*}%"
+						replace all ", " and " and " with "||" in {_hfuifhofh}
+						if {_hfuifhofh} is "<none>":
+							set {_hfuifhofh} to "&cCette partie n'est pas utiliser par le métier %arg-2%."
+						format slot 23 of player with anvil named "&4&lLorsque vous réparez." with lore "%{_hfuifhofh}%" to be unstealable
+						clear {_estethique::*}
+						clear {_hfuifhofh}
+								
+						set {_Fishing::*} to configuration section "Fishing" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_loop.number} to 0
+						loop {_Fishing::*}:
+							add 1 to {_loop.number}
+							set {_Fishing2::*} to configuration section "Fishing.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Fishing3} to single value "Fishing.%loop-value%.%{_Fishing2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Fishing4} to single value "Fishing.%loop-value%.%{_Fishing2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Fishing5} to single value "Fishing.%loop-value%.%{_Fishing2::3}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							add "&7Item : &6%loop-value% &8- &7Gain: &6%{_Fishing3}% Euros &8- &7EXP : &6%{_Fishing4}% xp" to {_estethique::*}
+						set {_hfuifhofh} to "%{_estethique::*}%"
+						replace all ", " and " and " with "||" in {_hfuifhofh}
+						if {_hfuifhofh} is "<none>":
+							set {_hfuifhofh} to "&cCette partie n'est pas utiliser par le métier %arg-2%."
+						format slot 23 of player with fish named "&4&lLorsque vous pêchez." with lore "%{_hfuifhofh}%" to be unstealable
+						clear {_estethique::*}
+						clear {_hfuifhofh}
+								
+						set {_Kill::*} to configuration section "Kill" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_loop.number} to 0
+						loop {_Kill::*}:
+							add 1 to {_loop.number}
+							set {_Kill2::*} to configuration section "Kill.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Kill3} to single value "Kill.%loop-value%.%{_Kill2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Kill4} to single value "Kill.%loop-value%.%{_Kill2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Kill5} to single value "Kill.%loop-value%.%{_Kill2::3}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							replace all "true" with "&2Récupérable" in {_Kill5}
+							replace all "false" with "&4Irrécupérable" in {_Kill5}
+							add "&7Item : &6%loop-value% &8- &7Gain: &6%{_Kill3}% Euros &8- &7EXP : &6%{_Kill4}% xp &8- &7Tête: &6%{_Kill5}%" to {_estethique::*}
+						set {_hfuifhofh} to "%{_estethique::*}%"
+						replace all ", " and " and " with "||" in {_hfuifhofh}
+						if {_hfuifhofh} is "<none>":
+							set {_hfuifhofh} to "&cCette partie n'est pas utiliser par le métier %arg-2%."
+						format slot 24 of player with gold sword named "&4&lLorsque vous tuez." with lore "%{_hfuifhofh}%" to be unstealable
+						clear {_estethique::*}
+						clear {_hfuifhofh}
+								
+						set {_Craft::*} to configuration section "Craft" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_loop.number} to 0
+						loop {_Craft::*}:
+							add 1 to {_loop.number}
+							set {_Craft2::*} to configuration section "Craft.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Craft3} to single value "Craft.%loop-value%.%{_Craft2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Craft4} to single value "Craft.%loop-value%.%{_Craft2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							add "&7Item : &6%loop-value% &8- &7Gain: &6%{_Craft3}% Euros &8- &7EXP : &6%{_Craft4}% xp" to {_estethique::*}
+						set {_hfuifhofh} to "%{_estethique::*}%"
+						replace all ", " and " and " with "||" in {_hfuifhofh}
+						if {_hfuifhofh} is "<none>":
+							set {_hfuifhofh} to "&cCette partie n'est pas utiliser par le métier %arg-2%."
+						format slot 25 of player with crafting table named "&4&lLorsque vous craftez." with lore "%{_hfuifhofh}%" to be unstealable
+						clear {_estethique::*}
+						clear {_hfuifhofh}
+								
+						set {_Eat::*} to configuration section "Eat" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_loop.number} to 0
+						loop {_Eat::*}:
+							add 1 to {_loop.number}
+							set {_Eat2::*} to configuration section "Eat.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Eat3} to single value "Eat.%loop-value%.%{_Eat2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Eat4} to single value "Eat.%loop-value%.%{_Eat2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							add "&7Item : &6%loop-value% &8- &7Gain: &6%{_Eat3}% Euros &8- &7EXP : &6%{_Eat4}% xp" to {_estethique::*}
+						set {_hfuifhofh} to "%{_estethique::*}%"
+						replace all ", " and " and " with "||" in {_hfuifhofh}
+						if {_hfuifhofh} is "<none>":
+							set {_hfuifhofh} to "&cCette partie n'est pas utiliser par le métier %arg-2%."
+						format slot 28 of player with cooked chicken named "&4&lLorsque vous mangez." with lore "%{_hfuifhofh}%" to be unstealable
+						clear {_estethique::*}
+						clear {_hfuifhofh}
+								
+						set {_Smelt::*} to configuration section "Smelt" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_loop.number} to 0
+						loop {_Smelt::*}:
+							add 1 to {_loop.number}
+							set {_Smelt2::*} to configuration section "Smelt.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Smelt3} to single value "Smelt.%loop-value%.%{_Smelt2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Smelt4} to single value "Smelt.%loop-value%.%{_Smelt2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							add "&7Item : &6%loop-value% &8- &7Gain: &6%{_Smelt3}% Euros &8- &7EXP : &6%{_Smelt4}% xp" to {_estethique::*}
+						set {_hfuifhofh} to "%{_estethique::*}%"
+						replace all ", " and " and " with "||" in {_hfuifhofh}
+						if {_hfuifhofh} is "<none>":
+							set {_hfuifhofh} to "&cCette partie n'est pas utiliser par le métier %arg-2%."
+						format slot 29 of player with non-burning_furnace named "&4&lLorsque vous fondez un item." with lore "%{_hfuifhofh}%" to be unstealable
+						clear {_estethique::*}
+						clear {_hfuifhofh}
+								
+						set {_Breed::*} to configuration section "Breed" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_loop.number} to 0
+						loop {_Breed::*}:
+							add 1 to {_loop.number}
+							set {_Breed2::*} to configuration section "Breed.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Breed3} to single value "Breed.%loop-value%.%{_Breed2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Breed4} to single value "Breed.%loop-value%.%{_Breed2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							add "&7Item : &6%loop-value% &8- &7Gain: &6%{_Breed3}% Euros &8- &7EXP : &6%{_Breed4}% xp" to {_estethique::*}
+						set {_hfuifhofh} to "%{_estethique::*}%"
+						replace all ", " and " and " with "||" in {_hfuifhofh}
+						if {_hfuifhofh} is "<none>":
+							set {_hfuifhofh} to "&cCette partie n'est pas utiliser par le métier %arg-2%."
+						format slot 30 of player with egg named "&4&lLorsque vous faites de la reproduction." with lore "%{_hfuifhofh}%" to be unstealable
+						clear {_estethique::*}
+						clear {_hfuifhofh}
+							
+						set {_Tame::*} to configuration section "Tame" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_loop.number} to 0
+						loop {_Tame::*}:
+							add 1 to {_loop.number}
+							set {_Tame2::*} to configuration section "Tame.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Tame3} to single value "Tame.%loop-value%.%{_Tame2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Tame4} to single value "Tame.%loop-value%.%{_Tame2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							add "&7Item : &6%loop-value% &8- &7Gain: &6%{_Tame3}% Euros &8- &7EXP : &6%{_Tame4}% xp" to {_estethique::*}
+						set {_hfuifhofh} to "%{_estethique::*}%"
+						replace all ", " and " and " with "||" in {_hfuifhofh}
+						if {_hfuifhofh} is "<none>":
+							set {_hfuifhofh} to "&cCette partie n'est pas utiliser par le métier %arg-2%."
+						format slot 31 of player with wheat item named "&4&lLorsque vous nourrissez des animaux." with lore "%{_hfuifhofh}%" to be unstealable
+						clear {_estethique::*}
+						clear {_hfuifhof}
+								
+						set {_Milk::*} to configuration section "Milk" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_loop.number} to 0
+						add 1 to {_loop.number}
+						set {_Milk2::*} to configuration section "Milk" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_Milk3} to single value "Milk.%{_Milk2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_Milk4} to single value "Milk.%{_Milk2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						format slot 32 of player with milk bucket named "&4&lLors de la traite d'une vache." with lore "&7Gain: &6%{_Milk3}%$ &8- &7EXP: &6%{_Milk4}% xp" to be unstealable
+							
+						set {_Shear::*} to configuration section "Shear" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_loop.number} to 0
+						loop {_Shear::*}:
+							add 1 to {_loop.number}
+							set {_Shear2::*} to configuration section "Shear.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Shear3} to single value "Shear.%loop-value%.%{_Shear2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Shear4} to single value "Shear.%loop-value%.%{_Shear2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							add "&7Item : &6%loop-value% &8- &7Gain: &6%{_Shear3}% Euros &8- &7EXP : &6%{_Shear4}% xp" to {_estethique::*}
+						set {_hfuifhofh} to "%{_estethique::*}%"
+						replace all ", " and " and " with "||" in {_hfuifhofh}
+						if {_hfuifhofh} is "<none>":
+							set {_hfuifhofh} to "&cCette partie n'est pas utiliser par le métier %arg-2%."
+						format slot 33 of player with dandelion yellow named "&4&lTeindre un mouton." with lore "%{_hfuifhofh}%" to be unstealable
+						clear {_estethique::*}
+						clear {_hfuifhof}
+								
+						set {_Dye::*} to configuration section "Dye" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_loop.number} to 0
+						loop {_Dye::*}:
+							add 1 to {_loop.number}
+							set {_Dye2::*} to configuration section "Dye.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							loop {_Dye2::*}:
+								set {_Dye3::*} to configuration section "Dye.%loop-value-1%.%loop-value-2%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_Dye4} to single value "Dye.%loop-value-1%.%loop-value-2%.%{_Dye3::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_Dye5} to single value "Dye.%loop-value-1%.%loop-value-2%.%{_Dye3::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								add "&7Item : &6%loop-value-1% &8- &7Couleur : &6%loop-value-2% &8- &7Gain: &6%{_Dye4}% Euros &8- &7EXP : &6%{_Dye5}% xp" to {_estethique::*}
+						set {_hfuifhofh} to "%{_estethique::*}%"
+						replace all ", " and " and " with "||" in {_hfuifhofh}
+						if {_hfuifhofh} is "<none>":
+							set {_hfuifhofh} to "&cCette partie n'est pas utiliser par le métier %arg-2%."
+						format slot 34 of player with orange dye named "&4&lTeindre un item." with lore "%{_hfuifhofh}%" to be unstealable
+						clear {_estethique::*}
+						clear {_hfuifhof}
+								
+						set {_Explore::*} to configuration section "Explore" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+						set {_loop.number} to 0
+						loop {_Explore::*}:
+							add 1 to {_loop.number}
+							set {_Explore2::*} to configuration section "Explore.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Explore3} to single value "Explore.%loop-value%.%{_Explore2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							set {_Explore4} to single value "Explore.%loop-value%.%{_Explore2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+							add "&7Item : &6%loop-value% &8- &7Gain: &6%{_Explore3}% Euros &8- &7EXP : &6%{_Explore4}% xp" to {_estethique::*}
+					set {_hfuifhofh} to "%{_estethique::*}%"
+					replace all ", " and " and " with "||" in {_hfuifhofh}
+					if {_hfuifhofh} is "<none>":
+						set {_hfuifhofh} to "&cCette partie n'est pas utiliser par le métier %arg-2%."
+					format slot 40 of player with diamond boots named "&4&lLorsque vous marchez/courrez." with lore "%{_hfuifhofh}%" to be unstealable
+					clear {_estethique::*}
+					clear {_hfuifhof}
+					
+					
+						
+						
+						
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+				if arg 1 is "browse":
+						# set {_jobs_list::*} to directory "plugins\killian6341_config\jobs\jobs"'s files 
+					set {_jobs_list::*} to files in "plugins\killian6341_config\jobs\jobs"
+					send "&7======= [ JOBS ] ======="
+					if {_jobs_list::*} is not set:
+						send "&4Erreur: &cAucun métier détecté."
+					else if {_jobs_list::*} is set:
+						set {_loop.id} to 1
+						send "&8Liste de tout les jobs disponibles:"
+						loop {_jobs_list::*}:
+							if {_jobs_list::%{_loop.id}%} is set:
+								replace all ".yml" with " " in {_jobs_list::*}
+								send "&c%{_loop.id}% &7- &6%{_jobs_list::%{_loop.id}%}%" to player
+								add 1 to {_loop.id}
+					send "&7======= [ LISTE ] ======="
+		else:	
+			send "&8[&4JOBS&8] &4Erreur: &6Jobs n'est pas actif ici."
+command /ajobs [<text>] [<text>]:
+	trigger:
+		if world of player is equal to {jobs.0X41} or {jobs.0X42} or {jobs.0X43} or {jobs.0X44} or {jobs.0X45} or {jobs.0X46} or {jobs.0X47} or {jobs.0X48} or {jobs.0X49} or {jobs.0X410}:
+			if player is not in world "world":
+				send "&8[&6JOBS&8] &4Erreur: &cJobs est désactivé ici!."
+			if world of player is equal to "world":
+				if player don't have permission "jobs.admin":
+					send "&4Erreur: &6Vous n'avez pas la permission."
+				else if player have permission "jobs.admin":
+					if arg 1 is not set:
+						send "&7======= [ JOBS &c&lADMIN &7] ======="
+						send "&7/ajobs create &6- Créer un nouveau jobs étape par étape"
+						send "&7/ajobs remove &6- Supprimer un jobs"
+						send "&7/ajobs list &6- List tout les job avec informations avencés"
+						send "&7/ajobs player &6- Configurer un joueur"
+						send "&7/ajobs stats &6- Statistiques d'un joueur"
+						send "&c/ajobs reset &6- Réinitialiser le plugin"
+						send "&2/ajobs test &6- Tester ce que le plugin comprend sur un job."
+						send "&2/ajobs compl &6- Vérifiez compatibilité du plugin."
+						send "&e/ajobs debug &6- 4DD87D4874C8C77C4C8C7"
+						send " "
+					if arg 1 is "compl":
+						send "&7======= [ DIAGNOSTIQUE JOBS &7] ======="
+						set {_plugins::*} to plugins list
+						send "&7--> Vérifie si vous possédez tout les plugins JAVA nécessaire."
+						if {_plugins::Vault} is not set:
+							send "&7&lVault: &2&lAUCUN PROBLEME"
+						else:
+							send "&7&lVault: &4&lMANQUANT"
+						if {_plugins::Skript} is not set:
+							send "&7&lSkript: &2&lAUCUN PROBLEME"
+						else:
+							send "&7&lSkript: &4&lMANQUANT"
+						if {_plugins::Skelett} is not set:
+							send "&7&lSkelett: &2&lAUCUN PROBLEME"
+						else:
+							send "&7&lSkelett: &4&lMANQUANT"
+						if {_plugins::LargeSK} is not set:
+							send "&7&lLargeSK: &2&lAUCUN PROBLEME"
+						else:
+							send "&7&lLargeSK: &4&lMANQUANT"
+						if {_plugins::skRayFall} is not set:
+							send "&7&lskRayFall: &2&lAUCUN PROBLEME"
+						else:
+							send "&7&lskRayFall: &4&lMANQUANT"
+						if {_plugins::MundoSK} is not set:
+							send "&7&lMundoSK: &2&lAUCUN PROBLEME"
+						else:
+							send "&7&lMundoSK: &4&lMANQUANT"
+						if {_plugins::WildSkript} is not set:
+							send "&7&lWildSkript: &2&lAUCUN PROBLEME"
+						else:
+							send "&7&lWildSkript: &4&lMANQUANT"
+						if {_plugins::ExertSK} is not set:
+							send "&7&lExertSK: &2&lAUCUN PROBLEME"
+						else:
+							send "&7&lExertSK: &4&lMANQUANT"
+						if {_plugins::skUtilities} is not set:
+							send "&7&lskUtilities: &2&lAUCUN PROBLEME"
+						else:
+							send "&7&lskUtilities: &4&lMANQUANT"
+						if {_plugins::Umbaska} is not set:
+							send "&7&lUmbaska: &2&lAUCUN PROBLEME"
+						else:
+							send "&7&lUmbaska: &4&lMANQUANT"
+						if {_plugins::SkQuery} is not set:
+							send "&7&lSkQuery: &2&lAUCUN PROBLEME"
+						else:
+							send "&7&lSkQuery: &4&lMANQUANT"
+						if {_plugins::TuSKe} is not set:
+							send "&7&lTuSKe: &2&lAUCUN PROBLEME"
+						else:
+							send "&7&lTuSKe: &4&lMANQUANT"
+						if {_plugins::SkStuff} is not set:
+							send "&7&lSkStuff: &2&lAUCUN PROBLEME"
+						else:
+							send "&7&lSkStuff: &4&lMANQUANT"
+						if {_plugins::SharpSK} is not set:
+							send "&7&lSharpSK: &2&lAUCUN PROBLEME"
+						else:
+							send "&7&lSharpSK: &4&lMANQUANT"
+						
+					if arg 1 is "test":
+						if arg 2 is not set:
+							send "&7======= [ JOBS &c&lADMIN &7] =======" and "&7/ajobs test <nom du fichier du jobs>" and " "
+						if arg 2 is set:
+							if file "plugins/killian6341_config/jobs/jobs/%arg-2%.yml" exists:
+								send "&8[&3JOBS&8] &6Nom du fichier : &e&l%arg-2%&6."
+								set {_dbg} to single value "metier" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								send "&8[&3JOBS&8] &6Nom du jobs : &e&l%{_dbg}%&6."
+								set {_dbg} to single value "icone" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								send "&8[&3JOBS&8] &6Icône du job : &e&l%{_dbg}%&6."
+								set {_dbg} to single value "actif" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								replace all "true" with "&2&lACTIF" in {_dbg}
+								replace all "false" with "&4&lNON ACTIF" in {_dbg}
+								send "&8[&3JOBS&8] &6Le job est activé ? : &e&l%{_dbg}%&6."
+								set {_PLACE::*} to configuration section "Place" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								loop {_PLACE::*}:
+									add 1 to {_loop.number}
+									set {_PLACE2::*} to configuration section "Place.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_PLACE3} to single value "Place.%loop-value%.%{_PLACE2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_PLACE4} to single value "Place.%loop-value%.%{_PLACE2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									send "&8[&3JOBS&8] &4%{_loop.number}% &7- Placer - &6%loop-value% &7--> &6%{_PLACE3}%$ &7--> &6%{_PLACE4}% xp"
+								
+								
+								set {_BREAK::*} to configuration section "Break" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_loop.number} to 0
+								loop {_BREAK::*}:
+									add 1 to {_loop.number}
+									set {_BREAK2::*} to configuration section "Break.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_BREAK3} to single value "Break.%loop-value%.%{_BREAK2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_BREAK4} to single value "Break.%loop-value%.%{_BREAK2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_BREAK5} to single value "Break.%loop-value%.%{_BREAK2::3}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									send "&8[&3JOBS&8] &4%{_loop.number}% &7- Casser - &6%loop-value% &7--> &6%{_BREAK3}%$ &7--> &6%{_BREAK4}% xp &7--> Stack:&6%{_BREAK5}%"
+								
+
+									set {_BREWING::*} to configuration section "Brewing" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_loop.number} to 0
+								loop {_BREWING::*}:
+									add 1 to {_loop.number}
+									set {_BREWING2::*} to configuration section "Brewing.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_BREWING3} to single value "Brewing.%loop-value%.%{_BREWING2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_BREWING4} to single value "Brewing.%loop-value%.%{_BREWING2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									send "&8[&3JOBS&8] &4%{_loop.number}% &7- Potion - &6%loop-value% &7--> &6%{_BREWING3}%$ &7--> &6%{_BREWING4}% xp"
+									
+								set {_Enchanting::*} to configuration section "Enchanting" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_loop.number} to 0
+								loop {_Enchanting::*}:
+									add 1 to {_loop.number}
+									set {_Enchanting2::*} to configuration section "Enchanting.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Enchanting3} to single value "Enchanting.%loop-value%.%{_Enchanting2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Enchanting4} to single value "Enchanting.%loop-value%.%{_Enchanting2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									send "&8[&3JOBS&8] &4%{_loop.number}% &7- Enchanter - &6%loop-value% &7--> &6%{_Enchanting3}%$ &7--> &6%{_Enchanting4}% xp"
+									
+								set {_Repair::*} to configuration section "Repair" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_loop.number} to 0
+								loop {_Repair::*}:
+									add 1 to {_loop.number}
+									set {_Repair2::*} to configuration section "Repair.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Repair3} to single value "Repair.%loop-value%.%{_Repair2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Repair4} to single value "Repair.%loop-value%.%{_Repair2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									send "&8[&3JOBS&8] &4%{_loop.number}% &7- Réparer - &6%loop-value% &7--> &6%{_Repair3}%$ &7--> &6%{_Repair4}% xp"
+									
+								set {_Fishing::*} to configuration section "Fishing" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_loop.number} to 0
+								loop {_Fishing::*}:
+									add 1 to {_loop.number}
+									set {_Fishing2::*} to configuration section "Fishing.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Fishing3} to single value "Fishing.%loop-value%.%{_Fishing2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Fishing4} to single value "Fishing.%loop-value%.%{_Fishing2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Fishing5} to single value "Fishing.%loop-value%.%{_Fishing2::3}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									send "&8[&3JOBS&8] &4%{_loop.number}% &7- Pêcher - &6%loop-value% &7--> &6%{_Fishing3}%$ &7--> &6%{_Fishing4}% xp"
+									
+									
+								set {_Kill::*} to configuration section "Kill" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_loop.number} to 0
+								loop {_Kill::*}:
+									add 1 to {_loop.number}
+									set {_Kill2::*} to configuration section "Kill.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Kill3} to single value "Kill.%loop-value%.%{_Kill2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Kill4} to single value "Kill.%loop-value%.%{_Kill2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Kill5} to single value "Kill.%loop-value%.%{_Kill2::3}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									send "&8[&3JOBS&8] &4%{_loop.number}% &7- Tuer - &6%loop-value% &7--> &6%{_Kill3}%$ &7--> &6%{_Kill4}% xp &7--> Tête:&6%{_Kill5}%"
+									
+									
+								set {_Craft::*} to configuration section "Craft" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_loop.number} to 0
+								loop {_Craft::*}:
+									add 1 to {_loop.number}
+									set {_Craft2::*} to configuration section "Craft.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Craft3} to single value "Craft.%loop-value%.%{_Craft2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Craft4} to single value "Craft.%loop-value%.%{_Craft2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									send "&8[&3JOBS&8] &4%{_loop.number}% &7- Fabriquer - &6%loop-value% &7--> &6%{_Craft3}%$ &7--> &6%{_Craft4}% xp"
+									
+								set {_Eat::*} to configuration section "Eat" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_loop.number} to 0
+								loop {_Eat::*}:
+									add 1 to {_loop.number}
+									set {_Eat2::*} to configuration section "Eat.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Eat3} to single value "Eat.%loop-value%.%{_Eat2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Eat4} to single value "Eat.%loop-value%.%{_Eat2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									send "&8[&3JOBS&8] &4%{_loop.number}% &7- Manger - &6%loop-value% &7--> &6%{_Eat3}%$ &7--> &6%{_Eat4}% xp"
+									
+								set {_Smelt::*} to configuration section "Smelt" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_loop.number} to 0
+								loop {_Smelt::*}:
+									add 1 to {_loop.number}
+									set {_Smelt2::*} to configuration section "Smelt.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Smelt3} to single value "Smelt.%loop-value%.%{_Smelt2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Smelt4} to single value "Smelt.%loop-value%.%{_Smelt2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									send "&8[&3JOBS&8] &4%{_loop.number}% &7- Fondre - &6%loop-value% &7--> &6%{_Smelt3}%$ &7--> &6%{_Smelt4}% xp"
+									
+								set {_Breed::*} to configuration section "Breed" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_loop.number} to 0
+								loop {_Breed::*}:
+									add 1 to {_loop.number}
+									set {_Breed2::*} to configuration section "Breed.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Breed3} to single value "Breed.%loop-value%.%{_Breed2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Breed4} to single value "Breed.%loop-value%.%{_Breed2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									send "&8[&3JOBS&8] &4%{_loop.number}% &7- Reproduction - &6%loop-value% &7--> &6%{_Breed3}%$ &7--> &6%{_Breed4}% xp"
+								
+								set {_Tame::*} to configuration section "Tame" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_loop.number} to 0
+								loop {_Tame::*}:
+									add 1 to {_loop.number}
+									set {_Tame2::*} to configuration section "Tame.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Tame3} to single value "Tame.%loop-value%.%{_Tame2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Tame4} to single value "Tame.%loop-value%.%{_Tame2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									send "&8[&3JOBS&8] &4%{_loop.number}% &7- Nourrir A. - &6%loop-value% &7--> &6%{_Tame3}%$ &7--> &6%{_Tame4}% xp"
+									
+								set {_Milk::*} to configuration section "Milk" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_loop.number} to 0
+								add 1 to {_loop.number}
+								set {_Milk2::*} to configuration section "Milk" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_Milk3} to single value "Milk.%{_Milk2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_Milk4} to single value "Milk.%{_Milk2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								send "&8[&3JOBS&8] &4%{_loop.number}% &7- Traire - &6%{_Milk3}%$ &7--> &6%{_Milk4}% xp"
+								
+								set {_Dye::*} to configuration section "Dye" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_loop.number} to 0
+								loop {_Dye::*}:
+									add 1 to {_loop.number}
+									set {_Dye2::*} to configuration section "Dye.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Dye3} to single value "Dye.%loop-value%.%{_Dye2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Dye4} to single value "Dye.%loop-value%.%{_Dye2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									send "&8[&3JOBS&8] &4%{_loop.number}% &7- Teindre Item - &6%loop-value% &7--> &6%{_Dye3}%$ &7--> &6%{_Dye4}% xp"
+									
+								set {_Shear::*} to configuration section "Shear" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_loop.number} to 0
+								loop {_Shear::*}:
+									add 1 to {_loop.number}
+									set {_Shear2::*} to configuration section "Shear.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Shear3} to single value "Shear.%loop-value%.%{_Shear2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Shear4} to single value "Shear.%loop-value%.%{_Shear2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									send "&8[&3JOBS&8] &4%{_loop.number}% &7- Teindre Mouton - &6%loop-value% &7--> &6%{_Shear3}%$ &7--> &6%{_Shear4}% xp"
+									
+								set {_Explore::*} to configuration section "Explore" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								set {_loop.number} to 0
+								loop {_Explore::*}:
+									add 1 to {_loop.number}
+									set {_Explore2::*} to configuration section "Explore.%loop-value%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Explore3} to single value "Explore.%loop-value%.%{_Explore2::1}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									set {_Explore4} to single value "Explore.%loop-value%.%{_Explore2::2}%" get of "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+									send "&8[&3JOBS&8] &4%{_loop.number}% &7- Explorer - &6%loop-value% &7--> &6%{_Explore3}%$ &7--> &6%{_Explore4}% xp"
+								send "&8[&3JOBS&8] &2&lFIN DU DIAGNOSTIQUE DE %ARG-2%"
+								stop
+							if file "plugins/killian6341_config/jobs/jobs/%arg-2%.yml" doesn't exists:
+								send "&8[&3JOBS&8] &6Jobs %arg-2% introuvable."
+					if arg 1 is "debug":
+						if {debug.jobs} is not set:
+							set {debug.jobs} to true
+							set {_DBG_0X4_BLK_BRK_PLK::*} to value list "BREAKABLE_OR_PLACABLE" get of "plugins/killian6341_config/jobs/aliases/block.yml"
+							loop {_DBG_0X4_BLK_BRK_PLK::*}:
+								add 1 to {_DBG_0X4_BLK_BRK_PLK_LP_NB}
+								send "&6%{_DBG_0X4_BLK_BRK_PLK_LP_NB}% &7- &c%loop-value%"
+							set {_DBG_0X4_BLK_BRK_PLK::*} to value list "BREAKABLE_OR_PLACABLE" get of "plugins/killian6341_config/jobs/aliases/block.yml"
+							loop {_DBG_0X4_BLK_BRK_PLK::*}:
+								add 1 to {_DBG_0X4_BLK_BRK_PLK_LP_NB}
+								send "&6%{_DBG_0X4_BLK_BRK_PLK_LP_NB}% &7- &c%loop-value%"
+							set {_DBG_0X4_BLK_BRK_PLK::*} to value list "BREW_TYPE" get of "plugins/killian6341_config/jobs/aliases/brew.yml"
+							loop {_DBG_0X4_BLK_BRK_PLK::*}:
+								add 1 to {_DBG_0X4_BLK_BRK_PLK_LP_NB}
+								send "&6%{_DBG_0X4_BLK_BRK_PLK_LP_NB}% &7- &c%loop-value%"
+							set {_DBG_0X4_BLK_BRK_PLK::*} to value list "ITEM_REPAIRED" get of "plugins/killian6341_config/jobs/aliases/repair.yml"
+							loop {_DBG_0X4_BLK_BRK_PLK::*}:
+								add 1 to {_DBG_0X4_BLK_BRK_PLK_LP_NB}
+								send "&6%{_DBG_0X4_BLK_BRK_PLK_LP_NB}% &7- &c%loop-value%"
+							send "&lFOUND ID : (DBG_0X4_BLK_BRK_PLK_LP_NB): &7&l%{_DBG_0X4_BLK_BRK_PLK_LP_NB}% aliases supported"
+							send "&1&lATTENTION : Debug mode actif &7- Les joueurs voient aussi tout ce qui font . Retapez /ajobs debug pour y désactiver."
+						else if {debug.jobs} is true:
+							delete {debug.jobs}
+							send "&1&lATTENTION : Debug mode non actif"
+					if arg 1 is "list":
+						send "&7======= [ JOBS &c&lADMIN &7] ======="
+						set {_jobs_list::*} to files in "plugins\killian6341_config\jobs\jobs"
+						loop {_jobs_list::*}:
+							add 1 to {_jobs.list.number}
+							set {_size.jobs} to size of file "plugins\killian6341_config\jobs\jobs\%{_jobs_list::%{_jobs.list.number}%}%"
+							replace all "KB" with "Ko" in {_size.jobs}
+							replace all "MB" with "Mo" in {_size.jobs}
+							replace all "GB" with "Go" in {_size.jobs}
+							replace all "B" with "octets" in {_size.jobs}
+							replace all "1.0 octets" with "-1 Ko" in {_size.jobs}
+							send "&6%{_jobs.list.number}% &7- &c%loop-value% &7- &6%{_size.jobs}%"
+					if arg 1 is "remove":
+						if arg 2 is not set:
+							send "&7======= [ JOBS &c&lADMIN &7] =======" and "&7/ajobs remove <nom du fichier du jobs>" and " "
+						if arg 2 is set:
+							if file "plugins/killian6341_config/jobs/jobs/%arg-2%.yml" exists:
+								df "plugins/killian6341_config/jobs/jobs/%arg-2%.yml"
+								send "&8[&4JOBS&8] &6Jobs %arg-2% supprimé."
+								stop
+							if file "plugins/killian6341_config/jobs/jobs/%arg-2%.yml" doesn't exists:
+								send "&8[&4JOBS&8] &6Jobs %arg-2% introuvable."
+					if arg 1 is "create":
+						if {editor.mode.%player%} is not set:
+							send player title "&9JOBS CREATION" with subtitle "&6Pour quitter tapez 'quit'" for 99 second
+							wait 4 second
+							send player title "&9Étape 1" with subtitle "&6Entrer un nom de métier dans le chat." for 99 second
+							set {editor.mode.%player%} to 0
+						else:
+							send "&4Erreur: &6Mode édition déjà en cours..."
+		else:	
+			send "&8[&4JOBS&8] &4Erreur: &6Jobs n'est pas actif ici."
+on chat:
+	if player is not in world "world":
+		send "&8[&6JOBS&8] &4Erreur: &cJobs est désactivé ici!."
+	if world of player is equal to "world":
+		if {editor.mode.%player%} is set:
+			cancel event
+		if message contain "quit":
+			if {editor.mode.%player%} is set:
+				delete {editor.mode.%player%}
+				delete file "plugins/killian6341_config/jobs/jobs/%{last.name.of.yaml.jobs.%player%}%.yml"
+				delete {last.name.of.yaml.jobs.%player%}
+				send player title "&9JOBS" with subtitle "&6Vous avez quitter le mode de création." for 1 second
+		if {editor.mode.%player%} is 0:
+			if file "plugins\killian6341_config\jobs\jobs\%message%" exists:
+				send player title "&4&lERREUR" with subtitle "&6Ce job éxiste déjà." for 4 second
+				wait 3 second
+				send player title "&9Étape 1" with subtitle "&6Entrer un nom de métier dans le chat." for 99 second
+			if message contain " " or ".":
+				send player title "&4&lERREUR" with subtitle "&6L'espace ou le point n'est pas autorisé." for 4 second
+				wait 3 second
+				send player title "&9Étape 1" with subtitle "&6Entrer un nom de métier dans le chat." for 99 second
+			else:
+				set {last.name.of.yaml.jobs.%player%} to message
+				send player title "&9Étape 1" with subtitle "&6Copie du fichier..." for 1 second
+				copy file "plugins\killian6341_config\jobs\seed\temp.yml" to "plugins\killian6341_config\jobs\jobs\"
+				download from "https://drive.google.com/uc?export=download&id=0B2y_lcANJO7tSE9vVDZXNG5PTms" to "plugins/killian6341_config/jobs/jobs/"
+				wait 5 tick
+				send player title "&9Étape 1" with subtitle "&6Chargement en cours..." for 10 second
+				rename file "plugins\killian6341_config\jobs\jobs\temp.yml" to "%{last.name.of.yaml.jobs.%player%}%.yml"
+				wait 5 tick
+				set "metier" to "%{last.name.of.yaml.jobs.%player%}%" in yaml file "plugins/killian6341_config/jobs/jobs/%{last.name.of.yaml.jobs.%player%}%.yml"
+				send player title "&9Étape 1" with subtitle "&6Fichier créer..." for 10 second
+				delete {editor.mode.%player%}
+				delete {last.name.of.yaml.jobs.%player%}
+				send player title "&9LES JOBS" with subtitle "&6plugins/killian6341_config/jobs/jobs" for 3 second
+				wait 4 second
+				send player title "&9" with subtitle "&2Fin de la création." for 3 second
