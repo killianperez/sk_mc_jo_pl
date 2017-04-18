@@ -574,6 +574,11 @@ command /jobs [<text>] [<text>]:
 					send "&6/jobs info &7- &3Plus d'informations sur les métiers"
 					send "&6/jobs join &7- &3Rejoindre un métier"
 					send "&6/jobs leave &7- &3Quitter un métier"
+					send ""
+					if {jobs.a.%player%} is set:
+						send "&7Votre jobs actuel: &6&l%{jobs.a.%player%}%"
+					else:
+						send "&7Votre jobs actuel: &4&lAUCUN"
 				if arg 1 is "leave":
 					if file "plugins/killian6341_config/jobs/players/%player%.yml" exists:
 						df "plugins/killian6341_config/jobs/players/%player%.yml"
